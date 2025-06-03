@@ -6,21 +6,31 @@
     <description>Recent content on Jainish&#39;s Log</description>
     <generator>Hugo -- 0.134.3</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 03 Jan 2025 17:23:15 +0530</lastBuildDate>
+    <lastBuildDate>Tue, 03 Jun 2025 13:48:45 +0530</lastBuildDate>
     <atom:link href="https://pjainish.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Multi-Stage Approach to Building Recommender Systems</title>
+      <link>https://pjainish.github.io/posts/multi-stage-recommender-systems/</link>
+      <pubDate>Tue, 03 Jun 2025 13:48:45 +0530</pubDate>
+      <guid>https://pjainish.github.io/posts/multi-stage-recommender-systems/</guid>
+      <description>&lt;p&gt;Multi-stage recommendation systems break down the challenging task of matching users with relevant items into several sequential phases, each optimizing for different objectives like efficiency, accuracy, and personalization. By progressively narrowing down a vast pool of candidates, applying increasingly complex models, and refining final rankings, these systems achieve scalable and high-quality recommendations even when dealing with billions of users and items (&lt;a href=&#34;https://www.ijcai.org/proceedings/2022/0771.pdf&#34; title=&#34;Neural Re-ranking in Multi-stage Recommender Systems: A Review - IJCAI&#34;&gt;ijcai.org&lt;/a&gt;, &lt;a href=&#34;https://developers.google.com/machine-learning/recommendation/overview/types&#34; title=&#34;Recommendation systems overview | Machine Learning - Google Developers&#34;&gt;developers.google.com&lt;/a&gt;). They mirror how humans might sift through information: first skimming broadly, then considering details, and finally fine-tuning choices. This blog post explores the conceptual foundations of multi-stage recommendation, the distinct roles of each phase, the motivations behind layered architectures, and the real-world trade-offs they address. Along the way, analogies to everyday decision-making, historical parallels from human learning, and references to psychology illustrate how designers balance speed, relevance, and diversity. Finally, we survey challenges such as latency constraints, fairness, and the evolution toward neural re-ranking and hybrid objectives, pointing curious readers to key research papers and practical guides for deeper study.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>BERT4Rec : Decoding Sequential Recommendations with the Power of Transformers</title>
-      <link>https://pjainish.github.io/posts/bert4rec/</link>
+      <link>https://pjainish.github.io/posts/bert4rec-sequential-recommendation/</link>
       <pubDate>Fri, 03 Jan 2025 17:23:15 +0530</pubDate>
-      <guid>https://pjainish.github.io/posts/bert4rec/</guid>
+      <guid>https://pjainish.github.io/posts/bert4rec-sequential-recommendation/</guid>
       <description>&lt;p&gt;BERT4Rec is a sequential recommendation model that leverages the bidirectional Transformer architecture, originally designed for language tasks, to capture users’ evolving preferences by jointly considering both past and future items in a sequence (&lt;a href=&#34;https://arxiv.org/abs/1904.06690&#34; title=&#34;BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer&#34;&gt;arxiv.org&lt;/a&gt;, &lt;a href=&#34;https://github.com/FeiSun/BERT4Rec&#34; title=&#34;GitHub - FeiSun/BERT4Rec: BERT4Rec: Sequential Recommendation with ...&#34;&gt;github.com&lt;/a&gt;). Unlike earlier unidirectional models that predict the next item only from previous ones, BERT4Rec uses a Cloze-style masking objective to predict missing items anywhere in the sequence, enabling richer context modeling (&lt;a href=&#34;https://arxiv.org/abs/1904.06690&#34; title=&#34;BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer&#34;&gt;arxiv.org&lt;/a&gt;, &lt;a href=&#34;https://github.com/FeiSun/BERT4Rec&#34; title=&#34;GitHub - FeiSun/BERT4Rec: BERT4Rec: Sequential Recommendation with ...&#34;&gt;github.com&lt;/a&gt;). Empirical evaluations on multiple benchmark datasets demonstrate that BERT4Rec often surpasses state-of-the-art sequential models like SASRec, though its performance can depend on careful training schedules and hyperparameter choices (&lt;a href=&#34;https://arxiv.org/abs/2207.07483&#34; title=&#34;A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation&#34;&gt;arxiv.org&lt;/a&gt;, &lt;a href=&#34;https://arxiv.org/abs/2308.07192&#34; title=&#34;gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling&#34;&gt;arxiv.org&lt;/a&gt;). This post traces the journey from early recommendation methods to the Transformer revolution and the rise of BERT, explains the core ideas behind BERT4Rec, connects them to cognitive analogies of Cloze tests, and discusses experiments, limitations, and future directions. By understanding BERT4Rec’s design and its place in the broader landscape of recommendation, readers can appreciate both its technical elegance and its conceptual roots in language modeling and human learning.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Top 100 Movies</title>
-      <link>https://pjainish.github.io/posts/top-100/</link>
+      <title>Films</title>
+      <link>https://pjainish.github.io/posts/films/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://pjainish.github.io/posts/top-100/</guid>
+      <guid>https://pjainish.github.io/posts/films/</guid>
       <description>&lt;h3 id=&#34;movies-i-have-watched-and-loved--not-in-order&#34;&gt;Movies I have watched and Loved !!! Not in order.&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We live in a box of space and time. Movies are windows in its walls.&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;

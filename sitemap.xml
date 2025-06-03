@@ -2,23 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://pjainish.github.io/posts/bert4rec/</loc>
-    <lastmod>2025-01-03T17:23:15+05:30</lastmod>
-  </url><url>
     <loc>https://pjainish.github.io/</loc>
-    <lastmod>2025-01-03T17:23:15+05:30</lastmod>
+    <lastmod>2025-06-03T13:48:45+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/posts/multi-stage-recommender-systems/</loc>
+    <lastmod>2025-06-03T13:48:45+05:30</lastmod>
   </url><url>
     <loc>https://pjainish.github.io/posts/</loc>
+    <lastmod>2025-06-03T13:48:45+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/posts/bert4rec-sequential-recommendation/</loc>
     <lastmod>2025-01-03T17:23:15+05:30</lastmod>
   </url><url>
     <loc>https://pjainish.github.io/archives/</loc>
   </url><url>
     <loc>https://pjainish.github.io/categories/</loc>
   </url><url>
+    <loc>https://pjainish.github.io/posts/films/</loc>
+  </url><url>
     <loc>https://pjainish.github.io/search/</loc>
   </url><url>
     <loc>https://pjainish.github.io/tags/</loc>
-  </url><url>
-    <loc>https://pjainish.github.io/posts/top-100/</loc>
   </url>
 </urlset>
