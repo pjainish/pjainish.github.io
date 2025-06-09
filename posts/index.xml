@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Jainish&#39;s Log</description>
     <generator>Hugo -- 0.134.3</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Jun 2025 13:48:45 +0530</lastBuildDate>
+    <lastBuildDate>Mon, 09 Jun 2025 13:00:00 +0530</lastBuildDate>
     <atom:link href="https://pjainish.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Incorporating Ads into Large Language Models: The Hidden Economy of AI Responses</title>
+      <link>https://pjainish.github.io/posts/incorporating-ads-into-llms/</link>
+      <pubDate>Mon, 09 Jun 2025 13:00:00 +0530</pubDate>
+      <guid>https://pjainish.github.io/posts/incorporating-ads-into-llms/</guid>
+      <description>Discover how in-response advertising unlocks a hidden AI revenue stream - balancing seamless brand integration with user trust and privacy.</description>
+    </item>
     <item>
       <title>Multi-Stage Approach to Building Recommender Systems</title>
       <link>https://pjainish.github.io/posts/multi-stage-recommender-systems/</link>

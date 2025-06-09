@@ -2,13 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://pjainish.github.io/</loc>
-    <lastmod>2025-06-03T13:48:45+05:30</lastmod>
+    <loc>https://pjainish.github.io/tags/adtech/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
   </url><url>
-    <loc>https://pjainish.github.io/posts/multi-stage-recommender-systems/</loc>
-    <lastmod>2025-06-03T13:48:45+05:30</lastmod>
+    <loc>https://pjainish.github.io/categories/adtech/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/tags/ai/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/categories/ai/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/categories/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/posts/incorporating-ads-into-llms/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/tags/llm/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/tags/monetization/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/categories/monetization/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
   </url><url>
     <loc>https://pjainish.github.io/posts/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/tags/privacy/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/tags/</loc>
+    <lastmod>2025-06-09T13:00:00+05:30</lastmod>
+  </url><url>
+    <loc>https://pjainish.github.io/posts/multi-stage-recommender-systems/</loc>
     <lastmod>2025-06-03T13:48:45+05:30</lastmod>
   </url><url>
     <loc>https://pjainish.github.io/posts/bert4rec-sequential-recommendation/</loc>
@@ -16,12 +49,8 @@
   </url><url>
     <loc>https://pjainish.github.io/archives/</loc>
   </url><url>
-    <loc>https://pjainish.github.io/categories/</loc>
-  </url><url>
     <loc>https://pjainish.github.io/posts/films/</loc>
   </url><url>
     <loc>https://pjainish.github.io/search/</loc>
-  </url><url>
-    <loc>https://pjainish.github.io/tags/</loc>
   </url>
 </urlset>
