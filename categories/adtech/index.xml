@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>AdTech on Jainish Patel</title><link>https://pjainish.github.io/categories/adtech/</link><description>Recent content in AdTech on Jainish Patel</description><generator>Hugo -- 0.150.0</generator><language>en-us</language><lastBuildDate>Mon, 09 Jun 2025 13:00:00 +0530</lastBuildDate><atom:link href="https://pjainish.github.io/categories/adtech/index.xml" rel="self" type="application/rss+xml"/><item><title>Incorporating Ads into Large Language Models: The Hidden Economy of AI Responses</title><link>https://pjainish.github.io/blog/incorporating-ads-into-llms/</link><pubDate>Mon, 09 Jun 2025 13:00:00 +0530</pubDate><guid>https://pjainish.github.io/blog/incorporating-ads-into-llms/</guid><description>Discover how in-response advertising unlocks a hidden AI revenue stream - balancing seamless brand integration with user trust and privacy.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AdTech on Jainish Patel</title>
+    <link>https://pjainish.github.io/categories/adtech/</link>
+    <description>Recent content in AdTech on Jainish Patel</description>
+    <generator>Hugo -- 0.150.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 Jun 2025 13:00:00 +0530</lastBuildDate>
+    <atom:link href="https://pjainish.github.io/categories/adtech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Incorporating Ads into Large Language Models: The Hidden Economy of AI Responses</title>
+      <link>https://pjainish.github.io/blog/incorporating-ads-into-llms/</link>
+      <pubDate>Mon, 09 Jun 2025 13:00:00 +0530</pubDate>
+      <guid>https://pjainish.github.io/blog/incorporating-ads-into-llms/</guid>
+      <description>Discover how in-response advertising unlocks a hidden AI revenue stream - balancing seamless brand integration with user trust and privacy.</description>
+    </item>
+  </channel>
+</rss>
