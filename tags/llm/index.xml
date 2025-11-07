@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>LLM on Jainish Patel</title><link>https://pjainish.github.io/tags/llm/</link><description>Recent content in LLM on Jainish Patel</description><generator>Hugo -- 0.150.0</generator><language>en-us</language><lastBuildDate>Mon, 09 Jun 2025 13:00:00 +0530</lastBuildDate><atom:link href="https://pjainish.github.io/tags/llm/index.xml" rel="self" type="application/rss+xml"/><item><title>Incorporating Ads into Large Language Models: The Hidden Economy of AI Responses</title><link>https://pjainish.github.io/blog/incorporating-ads-into-llms/</link><pubDate>Mon, 09 Jun 2025 13:00:00 +0530</pubDate><guid>https://pjainish.github.io/blog/incorporating-ads-into-llms/</guid><description>Discover how in-response advertising unlocks a hidden AI revenue stream - balancing seamless brand integration with user trust and privacy.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>LLM on Jainish Patel</title>
+    <link>http://localhost:1313/tags/llm/</link>
+    <description>Recent content in LLM on Jainish Patel</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 Jun 2025 13:00:00 +0530</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/llm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Incorporating Ads into Large Language Models: The Hidden Economy of AI Responses</title>
+      <link>http://localhost:1313/posts/incorporating-ads-into-llms/</link>
+      <pubDate>Mon, 09 Jun 2025 13:00:00 +0530</pubDate>
+      <guid>http://localhost:1313/posts/incorporating-ads-into-llms/</guid>
+      <description>&lt;p&gt;The moment you ask ChatGPT about a travel destination and it casually mentions a specific hotel booking platform, or when Claude suggests a particular coding tool while helping with your programming question, you&amp;rsquo;re witnessing something fascinating: the intersection of artificial intelligence and advertising. What seems like helpful, neutral advice might actually be the result of careful economic engineering beneath the hood of these language models.&lt;/p&gt;&#xA;&lt;p&gt;This isn&amp;rsquo;t about banner ads cluttering up your chat interface - that would be crude and obvious. Instead, we&amp;rsquo;re talking about something far more sophisticated: weaving promotional content seamlessly into the fabric of AI-generated text itself. It&amp;rsquo;s a practice that&amp;rsquo;s quietly reshaping how we think about AI neutrality, user trust, and the economics of running these incredibly expensive models.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    BERT4Rec : Decoding Sequential Recommendations with the Power of Transformers | Jainish Patel
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/bert4rec-sequential-recommendation/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/bert4rec-sequential-recommendation/">
+  <meta property="og:site_name" content="Jainish Patel">
+  <meta property="og:title" content="BERT4Rec : Decoding Sequential Recommendations with the Power of Transformers">
+  <meta property="og:description" content="BERT4Rec is a sequential recommendation model that leverages the bidirectional Transformer architecture, originally designed for language tasks, to capture users’ evolving preferences by jointly considering both past and future items in a sequence (arxiv.org, github.com). Unlike earlier unidirectional models that predict the next item only from previous ones, BERT4Rec uses a Cloze-style masking objective to predict missing items anywhere in the sequence, enabling richer context modeling (arxiv.org, github.com). Empirical evaluations on multiple benchmark datasets demonstrate that BERT4Rec often surpasses state-of-the-art sequential models like SASRec, though its performance can depend on careful training schedules and hyperparameter choices (arxiv.org, arxiv.org). This post traces the journey from early recommendation methods to the Transformer revolution and the rise of BERT, explains the core ideas behind BERT4Rec, connects them to cognitive analogies of Cloze tests, and discusses experiments, limitations, and future directions. By understanding BERT4Rec’s design and its place in the broader landscape of recommendation, readers can appreciate both its technical elegance and its conceptual roots in language modeling and human learning.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-03T17:23:15+05:30">
+    <meta property="article:modified_time" content="2025-01-03T17:23:15+05:30">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.57df9e7d692553f966cff4593ede6b53efb74da234876bacffeac774bd572e53.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Jainish Patel</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/contact/" >
+                /Contact
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts/" >
+                /Posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts/films/" >
+                /Films
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">~</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/bert4rec-sequential-recommendation/">BERT4Rec : Decoding Sequential Recommendations with the Power of Transformers</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">BERT4Rec : Decoding Sequential Recommendations with the Power of Transformers</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="author">Jainish Patel </p>
+            
+            <p class="single-date">
+              <time datetime="2025-01-03T17:23:15&#43;05:30">January 3, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <p>BERT4Rec is a sequential recommendation model that leverages the bidirectional Transformer architecture, originally designed for language tasks, to capture users’ evolving preferences by jointly considering both past and future items in a sequence (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://github.com/FeiSun/BERT4Rec" title="GitHub - FeiSun/BERT4Rec: BERT4Rec: Sequential Recommendation with ...">github.com</a>). Unlike earlier unidirectional models that predict the next item only from previous ones, BERT4Rec uses a Cloze-style masking objective to predict missing items anywhere in the sequence, enabling richer context modeling (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://github.com/FeiSun/BERT4Rec" title="GitHub - FeiSun/BERT4Rec: BERT4Rec: Sequential Recommendation with ...">github.com</a>). Empirical evaluations on multiple benchmark datasets demonstrate that BERT4Rec often surpasses state-of-the-art sequential models like SASRec, though its performance can depend on careful training schedules and hyperparameter choices (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>, <a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>). This post traces the journey from early recommendation methods to the Transformer revolution and the rise of BERT, explains the core ideas behind BERT4Rec, connects them to cognitive analogies of Cloze tests, and discusses experiments, limitations, and future directions. By understanding BERT4Rec’s design and its place in the broader landscape of recommendation, readers can appreciate both its technical elegance and its conceptual roots in language modeling and human learning.</p>
+<h2 class="heading" id="introduction-a-learning-journey">
+  Introduction: A Learning Journey
+  <a class="anchor" href="#introduction-a-learning-journey">#</a>
+</h2>
+<p>I still remember the first time I tried to build a recommendation system. It was during my undergraduate years, and I wanted to create a small app that suggested books to my friends based on what they had read before. At that time, I naively believed that simply counting co-occurrences of books would be enough. I soon realized that user preferences change over time, and static co-occurrence matrices felt too rigid. That curiosity led me to explore sequential recommendation—models that treat a user’s history as an evolving narrative rather than a single static snapshot.</p>
+<p>Fast forward a few years, and I found myself diving into deep learning approaches for recommendation during my PhD. Each step felt like peeling another layer of understanding: starting with simple Markov chains, moving to recurrent neural networks, then witnessing the Transformer revolution in natural language processing (NLP) with papers like “Attention Is All You Need” (<a href="https://arxiv.org/abs/1706.03762" title="Attention Is All You Need">arxiv.org</a>, <a href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf" title="Attention is All you Need - NIPS">papers.nips.cc</a>) and “BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding” (<a href="https://arxiv.org/abs/1810.04805" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">arxiv.org</a>, <a href="https://aclanthology.org/N19-1423/" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">aclanthology.org</a>). In language tasks, these models treated sentences as dynamic sequences of words; in recommendation, sequences of items could be handled similarly.</p>
+<p>Just as the alphabet and grammar form the foundation of language, the sequence of user interactions—clicks, views, purchases—forms the grammar of recommendation. When I first encountered BERT4Rec, I saw a bridge between these worlds: a model designed for language Cloze tasks, applied to sequences of items. In this post, I want to share that journey—why the shift from unidirectional to bidirectional models matters, how the Cloze objective parallels human tests, the design choices behind BERT4Rec, and what we can learn both technically and conceptually from it. My hope is that, by the end, you’ll see BERT4Rec not just as another state-of-the-art model, but as part of a broader narrative connecting human cognition, language, and recommendation.</p>
+<h2 class="heading" id="background-from-static-to-sequential-recommendation">
+  Background: From Static to Sequential Recommendation
+  <a class="anchor" href="#background-from-static-to-sequential-recommendation">#</a>
+</h2>
+<h3 class="heading" id="the-early-days-collaborative-filtering-and-beyond">
+  The Early Days: Collaborative Filtering and Beyond
+  <a class="anchor" href="#the-early-days-collaborative-filtering-and-beyond">#</a>
+</h3>
+<p>Recommender systems began with collaborative filtering approaches that treat users and items symmetrically, often using matrix factorization to uncover latent factors (<a href="https://link.springer.com/chapter/10.1007/978-981-16-5348-3_48" title="Cross-domain Self-attentive Sequential Recommendations">link.springer.com</a>). These methods assume static preferences: a user has fixed tastes, and items have fixed attributes. For example, if Alice liked “The Hobbit” and “The Lord of the Rings,” a static model would continue recommending similar fantasy books without considering that she might have grown more interested in science fiction recently.</p>
+<p>Psychologically, this is akin to assuming that a person’s personality never changes—an oversimplification. In reality, tastes evolve. Just as our moods and interests shift from week to week, user interactions in an online setting reflect changing preferences. Recognizing this, researchers started looking at temporal dynamics: assigning more weight to recent interactions (<a href="https://link.springer.com/chapter/10.1007/978-981-16-5348-3_48" title="Cross-domain Self-attentive Sequential Recommendations">link.springer.com</a>, <a href="https://arxiv.org/abs/1808.09781" title="Self-Attentive Sequential Recommendation">arxiv.org</a>). However, these adjustments were often heuristic rather than deeply integrated into the model’s structure.</p>
+<h3 class="heading" id="sequential-recommendation-capturing-the-flow">
+  Sequential Recommendation: Capturing the Flow
+  <a class="anchor" href="#sequential-recommendation-capturing-the-flow">#</a>
+</h3>
+<p>To better model evolving preferences, sequential recommendation treats a user’s history as an ordered list of events. Two main families of approaches emerged:</p>
+<ul>
+<li>
+<p><strong>Markov Chain-based Models</strong>: These assume that the next action depends on a limited window of previous actions, often just the last one or two (<a href="https://cseweb.ucsd.edu/~jmcauley/pdfs/icdm18.pdf" title="Self-Attentive Sequential Recommendation - University of California ...">cseweb.ucsd.edu</a>). While simple and effective in sparse settings, they struggle to capture longer-term patterns. It’s like predicting the next word in a sentence by looking only at the immediately preceding word—sometimes okay, but often missing broader context.</p>
+</li>
+<li>
+<p><strong>Recurrent Neural Networks (RNNs)</strong>: With the rise of deep learning, RNNs (e.g., GRU4Rec) became popular for sequential recommendation tasks. They process one item at a time, updating a hidden state that summarizes the history (<a href="https://link.springer.com/chapter/10.1007/978-981-16-5348-3_48" title="Cross-domain Self-attentive Sequential Recommendations">link.springer.com</a>, <a href="https://arxiv.org/abs/1808.09781" title="Self-Attentive Sequential Recommendation">arxiv.org</a>). While theoretically capable of capturing long-range dependencies, RNNs can suffer from vanishing gradients and can be slow to train, especially when sequences get long.</p>
+</li>
+</ul>
+<p>These methods moved beyond static views of users, but they still relied on <em>unidirectional</em> modeling: either Markov chains always look backward a fixed number of steps, and RNNs process sequences from left (oldest) to right (newest). In human terms, it’s like reading a story only forward—never knowing how the ending influences the interpretation of earlier chapters.</p>
+<h3 class="heading" id="self-attention-and-sasrec-a-step-towards-flexible-context">
+  Self-Attention and SASRec: A Step Towards Flexible Context
+  <a class="anchor" href="#self-attention-and-sasrec-a-step-towards-flexible-context">#</a>
+</h3>
+<p>In August 2018, Kang and McAuley introduced SASRec, a self-attentive sequential model that borrowed ideas from the Transformer’s self-attention mechanism to balance long-term and short-term context (<a href="https://arxiv.org/abs/1808.09781" title="Self-Attentive Sequential Recommendation">arxiv.org</a>, <a href="https://cseweb.ucsd.edu/~jmcauley/pdfs/icdm18.pdf" title="Self-Attentive Sequential Recommendation - University of California ...">cseweb.ucsd.edu</a>). Instead of processing item sequences strictly left-to-right, SASRec computes attention weights over all previous items at each step, allowing the model to focus on the most relevant past actions when predicting the next one (<a href="https://arxiv.org/abs/1808.09781" title="Self-Attentive Sequential Recommendation">arxiv.org</a>, <a href="https://arxiv.org/pdf/1808.09781" title="arXiv.org e-Print archive">arxiv.org</a>). Mechanically, it applies multi-head self-attention layers over item embeddings, followed by pointwise feed-forward layers, similar to each encoder block in the original Transformer (<a href="https://arxiv.org/abs/1706.03762" title="Attention Is All You Need">arxiv.org</a>, <a href="https://export.arxiv.org/abs/1706.03762v5" title="[1706.03762v5] Attention Is All You Need - arXiv">export.arxiv.org</a>).</p>
+<p>SASRec offered two main advantages:</p>
+<ol>
+<li><strong>Efficiency</strong>: By parallelizing self-attention computations across positions, SASRec can be trained faster than RNN-based models on modern hardware.</li>
+<li><strong>Adaptive Context</strong>: Attention weights allow the model to decide which past items matter most, rather than forcing it to use a fixed window or hidden state sequence.</li>
+</ol>
+<p>However, SASRec remains <em>unidirectional</em> in its attention: at each time step, it only attends to items that come before that position. This means it still cannot consider potential “future” items, even if they would be known at test time when scoring multiple candidate items. In language terms, it’s like understanding a sentence by reading it left to right—never knowing what words come later in the sentence.</p>
+<h2 class="heading" id="the-transformer-revolution-background-and-impact">
+  The Transformer Revolution: Background and Impact
+  <a class="anchor" href="#the-transformer-revolution-background-and-impact">#</a>
+</h2>
+<h3 class="heading" id="the-birth-of-the-transformer-vaswani-et-al-2017">
+  The Birth of the Transformer (Vaswani et al., 2017)
+  <a class="anchor" href="#the-birth-of-the-transformer-vaswani-et-al-2017">#</a>
+</h3>
+<p>In June 2017, Vaswani et al. published “Attention Is All You Need,” a paper that fundamentally changed NLP and sequence modeling (<a href="https://arxiv.org/abs/1706.03762" title="Attention Is All You Need">arxiv.org</a>, <a href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf" title="Attention is All you Need - NIPS">papers.nips.cc</a>). They introduced the <strong>Transformer</strong>, which replaced recurrence with multi-head self-attention and simple feed-forward networks. The key insights were:</p>
+<ul>
+<li><strong>Self-Attention Layers</strong>: These compute weighted sums of all positions’ embeddings for each position, allowing direct modeling of pairwise dependencies regardless of distance.</li>
+<li><strong>Positional Encoding</strong>: Since attention layers by themselves lack inherent order, they added sinusoidal positional encodings to inject sequence information.</li>
+<li><strong>Parallelization</strong>: Unlike RNNs, Transformers can process all positions in parallel, making training significantly faster on GPUs.</li>
+</ul>
+<p>By discarding recurrence and convolutions, the Transformer demonstrated state-of-the-art performance on machine translation tasks, achieving BLEU scores surpassing previous best models on WMT English-German and English-French benchmarks (<a href="https://arxiv.org/abs/1706.03762" title="Attention Is All You Need">arxiv.org</a>, <a href="https://scispace.com/papers/attention-is-all-you-need-1hodz0wcqb" title="(PDF) Attention is All you Need (2017) | Ashish Vaswani - Typeset">scispace.com</a>). This architecture quickly became the de facto backbone for a wide range of NLP tasks, from translation to summarization to question answering (<a href="https://huggingface.co/papers/1706.03762" title="Paper page - Attention Is All You Need - Hugging Face">huggingface.co</a>, <a href="https://arxiv.org/pdf/1706.03762" title="arXiv.org e-Print archive">arxiv.org</a>).</p>
+<p>Analogy: Before Transformers, sequence models were like cars with only one speed—reverse (recurrence) or forward (convolutions/attention with constraints). Transformers were like multi-gear vehicles that could shift seamlessly, giving models flexibility to access information anywhere in the sequence, much like looking up any chapter in a book instantly rather than reading every page sequentially.</p>
+<h3 class="heading" id="bert-deep-bidirectional-language-representation-devlin-et-al-2018">
+  BERT: Deep Bidirectional Language Representation (Devlin et al., 2018)
+  <a class="anchor" href="#bert-deep-bidirectional-language-representation-devlin-et-al-2018">#</a>
+</h3>
+<p>Building on the Transformer’s encoder, Devlin et al. introduced <strong>BERT</strong> (Bidirectional Encoder Representations from Transformers) in October 2018 (<a href="https://arxiv.org/abs/1810.04805" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">arxiv.org</a>, <a href="https://aclanthology.org/N19-1423/" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">aclanthology.org</a>). BERT’s main contributions were:</p>
+<ul>
+<li><strong>Bidirectional Context</strong>: By jointly attending to both left and right context in all layers (rather than only attending to previous tokens), BERT can learn richer representations.</li>
+<li><strong>Masked Language Modeling (MLM)</strong>: To enable bidirectionality, they used a Cloze-like task: randomly mask some tokens in the input and train the model to predict them based on surrounding context.</li>
+<li><strong>Next Sentence Prediction (NSP)</strong>: As a secondary task, BERT predicts whether two sentences follow each other, helping capture inter-sentence relationships.</li>
+</ul>
+<p>BERT was pre-trained on massive corpora (BooksCorpus and English Wikipedia), achieving state-of-the-art results across a variety of NLP benchmarks, such as GLUE, SQuAD, and others (<a href="https://arxiv.org/abs/1810.04805" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">arxiv.org</a>, <a href="https://export.arxiv.org/abs/1810.04805" title="[1810.04805] BERT: Pre-training of Deep Bidirectional ... - arXiv">export.arxiv.org</a>). Its bidirectional design unlocked new capabilities: while unidirectional language models (e.g., OpenAI GPT) process text left-to-right, BERT’s MLM allowed it to encode context from both sides, akin to reading a sentence and filling in missing words anywhere in it.</p>
+<p>Analogy: Imagine reading a paragraph with some words hidden and having to guess them using the rest of the paragraph. This Cloze-style task is exactly how BERT learns. In human tests, teachers often use fill-in-the-blank exercises to gauge comprehension—similarly, BERT’s MLM forces the model to deeply understand context.</p>
+<p>The impact of BERT extended beyond NLP. Researchers began to ask: if bidirectional Transformers can learn from masked words in a sentence, could a similar idea work for sequences of user interactions? Enter BERT4Rec.</p>
+<h2 class="heading" id="bert4rec-core-ideas-and-design">
+  BERT4Rec: Core Ideas and Design
+  <a class="anchor" href="#bert4rec-core-ideas-and-design">#</a>
+</h2>
+<h3 class="heading" id="motivation-why-bidirectional-modeling-matters">
+  Motivation: Why Bidirectional Modeling Matters
+  <a class="anchor" href="#motivation-why-bidirectional-modeling-matters">#</a>
+</h3>
+<p>In sequential recommendation, we often care about predicting the next item given past history. Unidirectional models like SASRec attend only to prior items when making a prediction (<a href="https://arxiv.org/abs/1808.09781" title="Self-Attentive Sequential Recommendation">arxiv.org</a>, <a href="https://cseweb.ucsd.edu/~jmcauley/pdfs/icdm18.pdf" title="Self-Attentive Sequential Recommendation - University of California ...">cseweb.ucsd.edu</a>). However, at evaluation or inference time, we typically score multiple candidate items to find the most likely next item. Those candidates can be seen as “future” items once we inject them into the sequence. If the model can attend to both past items and the candidate item itself (as if it were masked during training), it can form a richer representation that uses information from the full sequence context.</p>
+<p>BERT4Rec reframes sequential recommendation as a Cloze task: randomly mask items in the user’s history and train the model to predict them based on both left and right context, which may include items that occur after them in the sequence (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://github.com/FeiSun/BERT4Rec" title="GitHub - FeiSun/BERT4Rec: BERT4Rec: Sequential Recommendation with ...">github.com</a>). This bidirectional conditioning helps the model learn how items co-occur in different parts of the sequence, not just in a strict left-to-right chain.</p>
+<p>Analogy: In a detective novel, clues about who committed the crime may appear early and later in the story. A unidirectional reader would only use clues from the beginning up to the current chapter. A bidirectional reader, knowing the ending, can reinterpret earlier clues in light of later revelations. Similarly, BERT4Rec’s bidirectional attention allows the model to reinterpret earlier interactions when considering missing items.</p>
+<h3 class="heading" id="architecture-overview">
+  Architecture Overview
+  <a class="anchor" href="#architecture-overview">#</a>
+</h3>
+<p>At a high level, BERT4Rec follows the encoder architecture from the original Transformer with two major changes:</p>
+<ol>
+<li><strong>Cloze-style Masking</strong>: A certain percentage of items in a user’s sequence are randomly masked (replaced with a special [MASK] token). The model’s task is to predict the identity of each masked item using bidirectional attention over the unmasked items (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://www.researchgate.net/profile/Fei-Sun-41/publication/332438773_BERT4Rec_Sequential_Recommendation_with_Bidirectional_Encoder_Representations_from_Transformer/links/6047567d299bf1e0786667eb/BERT4Rec-Sequential-Recommendation-with-Bidirectional-Encoder-Representations-from-Transformer.pdf" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder ...">researchgate.net</a>).</li>
+<li><strong>Item Embeddings with Positional Encodings</strong>: Each item in the sequence is mapped to a learned embedding. Since the Transformer has no inherent sense of order, sinusoidal or learned positional encodings are added to each item embedding to encode its position in the sequence (<a href="https://arxiv.org/abs/1706.03762" title="Attention Is All You Need">arxiv.org</a>, <a href="https://ar5iv.labs.arxiv.org/html/1706.03762" title="[1706.03762] Attention Is All You Need - ar5iv">ar5iv.labs.arxiv.org</a>).</li>
+</ol>
+<p>Concretely:</p>
+<ul>
+<li><strong>Input</strong>: A user history of length <em>n</em> (e.g., [i₁, i₂, …, iₙ]). We randomly choose a subset of positions (usually 15%) and replace them with [MASK] tokens. For example, if the original sequence is [A, B, C, D, E] and positions 2 and 4 are masked, the input becomes [A, [MASK], C, [MASK], E].</li>
+<li><strong>Embedding Layer</strong>: Each position <em>t</em> has an embedding <code>E_item(iₜ)</code> (for item <em>iₜ</em>) plus a positional embedding <code>E_pos(t)</code>. So, the initial input to the Transformer is the sum <code>E_item + E_pos</code> for each position, with masked positions using a special mask embedding.</li>
+<li><strong>Transformer Encoder Stack</strong>: Typically 2 to 4 layers (depending on hyperparameters) of multi-head self-attention and feed-forward layers. Since we want bidirectional context, the self-attention is “full” (not masked), allowing each position to attend to all other positions in the sequence.</li>
+<li><strong>Output Heads</strong>: For each masked position, the final hidden state vector is passed through a linear projection followed by a softmax over the item vocabulary to predict which item was masked.</li>
+<li><strong>Loss Function</strong>: Cross-entropy loss is computed only over the masked positions, summing (or averaging) across them.</li>
+</ul>
+<p>During inference, to predict the next item, one can append a [MASK] token to the end of a user’s sequence and feed it through the model. The model’s output distribution at that position indicates the probabilities of all possible items being the next interaction.</p>
+<p>Technical Note: Because BERT4Rec conditions on bidirectional context, it avoids what is known as <strong>“exposure bias”</strong> often found in left-to-right models, where during training the model sees only ground-truth history, but during inference it must rely on its own predictions. BERT4Rec’s Cloze objective alleviates this by mixing masked ground truth with unmasked items, making the model robust to masked or unknown future items.</p>
+<h3 class="heading" id="training-as-a-cloze-task-deeper-explanation">
+  Training as a Cloze Task: Deeper Explanation
+  <a class="anchor" href="#training-as-a-cloze-task-deeper-explanation">#</a>
+</h3>
+<p>The term <strong>Cloze</strong> comes from psycholinguistics and educational testing: learners fill in missing words in a text passage (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>, <a href="https://www.kdnuggets.com/2019/07/pre-training-transformers-bi-directionality.html" title="Pre-training, Transformers, and Bi-directionality - KDnuggets">kdnuggets.com</a>). This is not a new idea. In fact, BERT borrowed it directly from earlier NLP work, such as the Cloze tests used by educators to measure student comprehension (<a href="https://www.kdnuggets.com/2019/07/pre-training-transformers-bi-directionality.html" title="Pre-training, Transformers, and Bi-directionality - KDnuggets">kdnuggets.com</a>). In the context of recommendation:</p>
+<ul>
+<li><strong>Masked Item Prediction (MIP)</strong>: Analogous to masked language modeling (MLM) in BERT, BERT4Rec’s MIP randomly selects a subset of positions in a user’s interaction sequence, hides each item, and asks the model to fill it in based on both past and future interactions.</li>
+<li><strong>Sampling Strategy</strong>: Typically, 15% of items are chosen for masking. Of those, 80% are replaced with [MASK], 10% with a random item (to encourage robustness), and 10% are left unchanged but still counted in the loss as if they were masked (to mitigate training/test mismatch) (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://github.com/FeiSun/BERT4Rec" title="GitHub - FeiSun/BERT4Rec: BERT4Rec: Sequential Recommendation with ...">github.com</a>).</li>
+<li><strong>Advantages</strong>: By predicting items anywhere in the sequence, the model learns co-occurrence patterns in all contexts, not just predicting the next item. This generates more training samples per sequence (since each masked position is a training example), potentially improving data efficiency (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://arxiv.org/pdf/1904.06690v1" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder ...">arxiv.org</a>).</li>
+</ul>
+<p>Analogy: When learning a language, filling in blank words anywhere in a paragraph helps both reading comprehension and vocabulary acquisition. Similarly, by practicing predicting missing items anywhere in their history, the model builds a more flexible representation of user preferences.</p>
+<h3 class="heading" id="comparison-with-unidirectional-models-eg-sasrec">
+  Comparison with Unidirectional Models (e.g., SASRec)
+  <a class="anchor" href="#comparison-with-unidirectional-models-eg-sasrec">#</a>
+</h3>
+<ul>
+<li>
+<p><strong>Context Scope</strong></p>
+<ul>
+<li><em>Unidirectional (SASRec)</em>: At position <em>t</em>, the model attends only to items 1 through <em>t–1</em>.</li>
+<li><em>Bidirectional (BERT4Rec)</em>: At each masked position <em>t</em>, the model attends to all items except those that are also masked. When predicting the next item (by placing a [MASK] at <em>n+1</em>), it attends to items 1 through <em>n</em> and vice versa for other masked positions.</li>
+</ul>
+</li>
+<li>
+<p><strong>Training Objective</strong></p>
+<ul>
+<li><em>Unidirectional</em>: Usually uses next-item prediction with cross-entropy loss at each time step.</li>
+<li><em>Bidirectional</em>: Uses Cloze objective, predicting multiple masked positions per sequence.</li>
+</ul>
+</li>
+<li>
+<p><strong>Data Efficiency</strong></p>
+<ul>
+<li><em>Unidirectional</em>: Generates one training sample per time step (predict next item).</li>
+<li><em>Bidirectional</em>: Generates as many training samples as there are masked positions (typically ~15% of sequence length), often leading to more gradient updates per sequence.</li>
+</ul>
+</li>
+<li>
+<p><strong>Inference</strong></p>
+<ul>
+<li><em>Unidirectional</em>: Directly predicts the next item based on history.</li>
+<li><em>Bidirectional</em>: Appends a [MASK] to the end to predict next item, or can mask any position for in-sequence imputation.</li>
+</ul>
+</li>
+</ul>
+<p>Several empirical studies have shown that BERT4Rec often outperforms SASRec, especially when long-range dependencies are important (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>). However, this performance advantage can require longer training times and careful hyperparameter tuning, as later work has pointed out (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>, <a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>).</p>
+<h2 class="heading" id="drawing-analogies-cloze-tests-human-learning-and-recommendation">
+  Drawing Analogies: Cloze Tests, Human Learning, and Recommendation
+  <a class="anchor" href="#drawing-analogies-cloze-tests-human-learning-and-recommendation">#</a>
+</h2>
+<h3 class="heading" id="the-psychology-of-masked-tests">
+  The Psychology of Masked Tests
+  <a class="anchor" href="#the-psychology-of-masked-tests">#</a>
+</h3>
+<p>Cloze tests, introduced by W. L. Taylor in 1953, are exercises where learners fill in blanks in a passage of text, gauging language comprehension and vocabulary knowledge (<a href="https://www.kdnuggets.com/2019/07/pre-training-transformers-bi-directionality.html" title="Pre-training, Transformers, and Bi-directionality - KDnuggets">kdnuggets.com</a>). Educational psychologists have found that Cloze tasks encourage active recall and semantic inference, as learners must use both local and global context to guess missing words correctly. Similarly, BERT’s MLM and BERT4Rec’s MIP require the model to infer missing tokens (words or items) from all available context, reinforcing rich contextual understanding.</p>
+<p>In human terms:</p>
+<ul>
+<li><strong>Local Context</strong>: To guess a masked word in a sentence, you use nearby words.</li>
+<li><strong>Global Context</strong>: Often, clues spread across the paragraph or entire document guide you toward the right answer.</li>
+</ul>
+<p>BERT4Rec’s masked items play the role of blank spaces in a text. The model, like a student in a Cloze test, must use all known interactions (both before and after the blank) to infer the missing preference. This leads to representations that capture not only pairwise item relationships but also how items co-occur across entire sessions.</p>
+<h3 class="heading" id="historical-perspective-from-prediction-to-comprehension">
+  Historical Perspective: From Prediction to Comprehension
+  <a class="anchor" href="#historical-perspective-from-prediction-to-comprehension">#</a>
+</h3>
+<p>Early recommendation models focused on <strong>prediction</strong>: given past clicks, what happens next? This is analogous to a fill-in-the-blank exercise where only the next word is blank. In mathematics, this is like knowing all terms of a sequence except the next one and trying to guess it from a recurrence relation. But modern language teaching emphasizes <strong>comprehension</strong>, teaching students to understand entire texts, not just predict the next word. BERT4Rec embodies that shift: from predicting sequentially to understanding a user’s entire session.</p>
+<p>Consider reading Hamlet: if you only focus on predicting the next line, you might miss the broader themes. If you think about themes and motifs across the play, you get a richer understanding. BERT4Rec, by predicting masked items anywhere, learns themes and motifs in interaction sequences as well.</p>
+<h3 class="heading" id="real-world-analogy-playlist-shuffling">
+  Real-World Analogy: Playlist Shuffling
+  <a class="anchor" href="#real-world-analogy-playlist-shuffling">#</a>
+</h3>
+<p>Imagine you’re curating a playlist of songs you’ll listen to on a road trip. Instead of putting them in a fixed order (e.g., chronological from your latest favorites), you shuffle them but still want the transitions to feel coherent. A unidirectional model ensures each song transitions well from the previous one, like ensuring each next word makes sense after the last. A bidirectional approach would allow you to also consider the song that comes after when choosing a song for a particular slot, creating smooth transitions both forward and backward. In BERT4Rec, masked songs correspond to shuffled or missing approximate transitions, and the model learns what fits best given both neighbors.</p>
+<h2 class="heading" id="technical-deep-dive-bert4recs-mechanics">
+  Technical Deep Dive: BERT4Rec’s Mechanics
+  <a class="anchor" href="#technical-deep-dive-bert4recs-mechanics">#</a>
+</h2>
+<h3 class="heading" id="input-representation">
+  Input Representation
+  <a class="anchor" href="#input-representation">#</a>
+</h3>
+<p>Given a user’s historical sequence of item interactions $i₁, i₂, …, iₙ$, BERT4Rec prepares inputs as follows (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://www.researchgate.net/profile/Fei-Sun-41/publication/332438773_BERT4Rec_Sequential_Recommendation_with_Bidirectional_Encoder_Representations_from_Transformer/links/6047567d299bf1e0786667eb/BERT4Rec-Sequential-Recommendation-with-Bidirectional-Encoder-Representations-from-Transformer.pdf" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder ...">researchgate.net</a>):</p>
+<ol>
+<li>
+<p><strong>Masking Strategy</strong></p>
+<ul>
+<li>
+<p>Randomly select 15% of positions for masking.</p>
+</li>
+<li>
+<p>Of those positions:</p>
+<ul>
+<li>80% are replaced with [MASK].</li>
+<li>10% are replaced with a random item ID from the vocabulary (to encourage robustness).</li>
+<li>10% remain unchanged (but are still counted in the loss). This strategy mirrors BERT’s design to prevent the model from relying too heavily on the [MASK] token (<a href="https://arxiv.org/abs/1810.04805" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">arxiv.org</a>, <a href="https://export.arxiv.org/abs/1810.04805" title="[1810.04805] BERT: Pre-training of Deep Bidirectional ... - arXiv">export.arxiv.org</a>).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Item Embeddings</strong></p>
+<ul>
+<li>Each item ID has a learned embedding vector of dimension <em>d</em>.</li>
+<li>A special embedding <code>E_mask</code> is used for [MASK] tokens.</li>
+</ul>
+</li>
+<li>
+<p><strong>Positional Embeddings</strong></p>
+<ul>
+<li>Since the Transformer has no notion of sequence order, add a learned positional embedding <code>E_pos(t)</code> for each position <em>t</em> ∈ {1,…,n}.</li>
+<li>The sum <code>E_item(iₜ) + E_pos(t)</code> forms the input embedding at position <em>t</em>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Sequence Length and Padding</strong></p>
+<ul>
+<li>For computational efficiency, fix a maximum sequence length <em>L</em> (e.g., 200).</li>
+<li>If a user’s history has fewer than <em>L</em> interactions, pad the sequence with [PAD] tokens at the front or back.</li>
+<li>[PAD] tokens have embeddings but are ignored in attention computations (i.e., their attention weights are set to zero).</li>
+</ul>
+</li>
+<li>
+<p><strong>Embedding Dropout</strong></p>
+<ul>
+<li>Optional dropout can be applied to the sum of item and positional embeddings to regularize training.</li>
+</ul>
+</li>
+</ol>
+<p>Mathematically, let</p>
+<p>$$
+xₜ = E_{item}(iₜ) + E_{pos}(t), \quad t = 1,\dots,n.
+$$</p>
+<p>Masked positions use</p>
+<p>$$
+xₜ = E_{mask} + E_{pos}(t).
+$$</p>
+<h3 class="heading" id="transformer-encoder-stack">
+  Transformer Encoder Stack
+  <a class="anchor" href="#transformer-encoder-stack">#</a>
+</h3>
+<p>BERT4Rec typically uses a stack of <em>N</em> encoder layers (e.g., <em>N</em> = 2 or 3 for smaller datasets, up to <em>N</em> = 6 for larger ones), each consisting of:</p>
+<ol>
+<li>
+<p><strong>Multi-Head Self-Attention</strong></p>
+<ul>
+<li>
+<p>For layer <em>l</em>, each position <em>t</em> has queries, keys, and values computed as linear projections of the input from the previous layer.</p>
+</li>
+<li>
+<p>Attention weights are computed as scaled dot products between queries and keys, followed by softmax.</p>
+</li>
+<li>
+<p>Weighted sums of values produce the attention output for each head.</p>
+</li>
+<li>
+<p>The outputs of all heads are concatenated and linearly projected back to dimension <em>d</em>.</p>
+</li>
+<li>
+<p>Residual connection and layer normalization are applied:</p>
+<p>$$
+\text{SA}_l(X) = \text{LayerNorm}(X + \text{MultiHeadAttn}(X)).
+$$</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Position-Wise Feed-Forward Network</strong></p>
+<ul>
+<li>
+<p>A two-layer feed-forward network with a GELU or ReLU activation:</p>
+<p>$$
+\text{FFN}_l(Y) = \text{LayerNorm}(Y + W₂ ,\phi(W₁ Y + b₁) + b₂),
+$$</p>
+<p>where $\phi$ is an activation (often GELU).</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>LayerNorm and Residual Connections</strong></p>
+<ul>
+<li>As in the original Transformer, each sub-layer has a residual (skip) connection followed by layer normalization, ensuring stable training and gradient flow (<a href="https://arxiv.org/abs/1706.03762" title="Attention Is All You Need">arxiv.org</a>, <a href="https://scispace.com/papers/attention-is-all-you-need-1hodz0wcqb" title="(PDF) Attention is All you Need (2017) | Ashish Vaswani - Typeset">scispace.com</a>).</li>
+</ul>
+</li>
+</ol>
+<p>Because the self-attention is <em>full</em> (no masking of future positions), each position’s representation at each layer can incorporate information from any other unmasked position in the sequence.</p>
+<h3 class="heading" id="output-and-loss-computation">
+  Output and Loss Computation
+  <a class="anchor" href="#output-and-loss-computation">#</a>
+</h3>
+<p>After <em>N</em> encoder layers, we obtain final hidden representations ${h₁, h₂, \dots, hₙ}$ ∈ ℝ^{n×d}. For each position <em>t</em> that was masked during input preparation, we compute:</p>
+<ol>
+<li>
+<p><strong>Item Prediction Scores</strong></p>
+<p>$$
+sₜ = W_{output} , hₜ + b_{output}, \quad sₜ ∈ ℝ^{|V|},
+$$</p>
+<p>where <em>|V|</em> is the size of the item vocabulary, and $W_{output} ∈ ℝ^{|V|×d}$.</p>
+</li>
+<li>
+<p><strong>Softmax and Cross-Entropy Loss</strong></p>
+<ul>
+<li>
+<p>Apply softmax to $sₜ$ to get predicted probability distribution $\hat{y}_t$.</p>
+</li>
+<li>
+<p>If the true item ID at position <em>t</em> is $iₜ^*$, the cross-entropy loss for that position is:</p>
+<p>$$
+\mathcal{L}<em>t = -\log\bigl(\hat{y}</em>{t}[ iₜ^* ]\bigr).
+$$</p>
+</li>
+<li>
+<p>Aggregate loss across all masked positions in the batch, typically averaging over them:</p>
+<p>$$
+\mathcal{L} = \frac{1}{\sum_t mₜ} \sum_{t=1}^n mₜ , \mathcal{L}_t,
+$$</p>
+<p>where $mₜ = 1$ if position <em>t</em> was masked, else 0.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>Because multiple positions are masked per sequence, each training example yields several prediction targets, improving data efficiency.</p>
+<h3 class="heading" id="inference-predicting-the-next-item">
+  Inference: Predicting the Next Item
+  <a class="anchor" href="#inference-predicting-the-next-item">#</a>
+</h3>
+<p>To recommend the next item for a user:</p>
+<ol>
+<li>
+<p><strong>Extend the Sequence</strong></p>
+<ul>
+<li>Given the user’s last <em>n</em> interactions, append a [MASK] token at position <em>n+1</em> (if <em>n+1 ≤ L</em>). If <em>n</em> = <em>L</em>, one could remove the oldest item or use sliding window techniques.</li>
+</ul>
+</li>
+<li>
+<p><strong>Feed Through Model</strong></p>
+<ul>
+<li>The [MASK] at position <em>n+1</em> participates in bidirectional attention, attending to all positions 1 through <em>n</em>. Conversely, positions 1 through <em>n</em> attend to the [MASK] if full self‐attention is used.</li>
+</ul>
+</li>
+<li>
+<p><strong>Obtain Scores</strong></p>
+<ul>
+<li>Compute $s_{n+1} ∈ ℝ^{|V|}$ from the final hidden state $h_{n+1}$.</li>
+<li>The highest-scoring items in $s_{n+1}$ are the top-K recommendations.</li>
+</ul>
+</li>
+</ol>
+<p>Because BERT4Rec’s training objective was to predict masked items given both left and right context, placing the [MASK] at the end simulates one masked position with only left context. While strictly speaking this isn’t bidirectional (the [MASK] at the end has no right context), it still benefits from richer item co-occurrence patterns learned during training. Empirically, this approach yields strong next-item recommendation accuracy.</p>
+<h2 class="heading" id="experimental-results-and-analysis">
+  Experimental Results and Analysis
+  <a class="anchor" href="#experimental-results-and-analysis">#</a>
+</h2>
+<h3 class="heading" id="datasets-and-evaluation-protocols">
+  Datasets and Evaluation Protocols
+  <a class="anchor" href="#datasets-and-evaluation-protocols">#</a>
+</h3>
+<p>In the original BERT4Rec paper, Sun et al. evaluated the model on four public benchmark datasets:</p>
+<ol>
+<li><strong>MovieLens-1M (ML-1M)</strong>: 1 million ratings from ~6000 users on ~3900 movies.</li>
+<li><strong>YooChoose</strong>: Click logs from the RecSys Challenge 2015, with ~8.6 million events.</li>
+<li><strong>Steam</strong>: Game purchase and play logs from the Steam platform.</li>
+<li><strong>Amazon Beauty</strong>: Reviews and ratings in the beauty product category from the Amazon Reviews dataset.</li>
+</ol>
+<p>For each user, interactions were chronologically ordered. The last interaction was used as the test item, the second last as validation, and earlier interactions for training. Performance metrics included Hit Rate (HR@K) and Normalized Discounted Cumulative Gain (NDCG@K) at various cut-offs (e.g., K = 5, 10) (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://arxiv.org/pdf/1904.06690v1" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder ...">arxiv.org</a>).</p>
+<h3 class="heading" id="baselines-compared">
+  Baselines Compared
+  <a class="anchor" href="#baselines-compared">#</a>
+</h3>
+<p>Sun et al. compared BERT4Rec against several state-of-the-art sequential recommendation methods:</p>
+<ul>
+<li><strong>GRU4Rec</strong>: RNN (GRU) based model with pairwise ranking loss.</li>
+<li><strong>Casual Convolutional (CasualConv)</strong>: Convolutional neural network model for sequences.</li>
+<li><strong>SASRec</strong>: Self-attention based unidirectional model.</li>
+<li><strong>Caser</strong>: Convolutional sequence embedding model (vertical + horizontal convolution).</li>
+<li><strong>NextItNet</strong>: Dilated residual network for sequential recommendation.</li>
+</ul>
+<h3 class="heading" id="key-findings">
+  Key Findings
+  <a class="anchor" href="#key-findings">#</a>
+</h3>
+<ol>
+<li>
+<p><strong>BERT4Rec vs. SASRec</strong></p>
+<ul>
+<li>Across ML-1M and YooChoose, BERT4Rec improved HR@10 by ≈2–3% and NDCG@10 by ≈1–2% relative to SASRec (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://arxiv.org/pdf/1904.06690v1" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder ...">arxiv.org</a>).</li>
+<li>On sparser datasets like Steam, the advantage increased, indicating that bidirectional context can better handle data sparsity by leveraging co-occurrence patterns across entire sessions.</li>
+</ul>
+</li>
+<li>
+<p><strong>Model Depth and Hidden Size</strong></p>
+<ul>
+<li>Deeper (more layers) or wider (larger <em>d</em>) BERT4Rec variants performed better on large datasets but risked overfitting on smaller ones.</li>
+<li>Typical configurations: 2 layers, hidden size 64 for ML-1M; 3–4 layers for larger datasets.</li>
+</ul>
+</li>
+<li>
+<p><strong>Masking Ratio</strong></p>
+<ul>
+<li>Masking ~15% of items per sequence yielded a good trade-off. Masking too many positions reduced signal per position; masking too few yielded fewer training samples.</li>
+</ul>
+</li>
+<li>
+<p><strong>Training Time</strong></p>
+<ul>
+<li>BERT4Rec required more compute than SASRec due to larger parameter counts and Cloze objective.</li>
+<li>Subsequent research (Petrov &amp; Macdonald, 2022) noted that default training schedules in the original implementations were too short to fully converge on some datasets; when trained longer, BERT4Rec’s performance became more consistent (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>, <a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>).</li>
+</ul>
+</li>
+</ol>
+<h3 class="heading" id="replicability-and-training-considerations">
+  Replicability and Training Considerations
+  <a class="anchor" href="#replicability-and-training-considerations">#</a>
+</h3>
+<p>Petrov and Macdonald (2022) conducted a systematic review and replicability study of BERT4Rec, finding:</p>
+<ul>
+<li><strong>Training Time Sensitivity</strong>: Default hyperparameters often led to under-trained models. Training 10–30× longer was sometimes necessary to reproduce reported results (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>, <a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>).</li>
+<li><strong>Batch Size and Learning Rates</strong>: Smaller batch sizes with warm-up steps and linear decay of learning rates yielded more stable convergence.</li>
+<li><strong>Alternative Architectures</strong>: Implementations using Hugging Face’s Transformers library, incorporating variants like DeBERTa’s disentangled attention, matched or exceeded original results with significantly less training time (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>, <a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>).</li>
+</ul>
+<p>Another study by Petrov &amp; Macdonald (2023) introduced <strong>gSASRec</strong>, which showed that SASRec could outperform BERT4Rec when properly addressing overconfidence arising from negative sampling (<a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>). They argued that BERT4Rec’s bidirectional mechanism alone did not guarantee superiority; rather, loss formulations and training strategies play a crucial role.</p>
+<h3 class="heading" id="comparative-strengths-and-weaknesses">
+  Comparative Strengths and Weaknesses
+  <a class="anchor" href="#comparative-strengths-and-weaknesses">#</a>
+</h3>
+<ul>
+<li>
+<p><strong>Strengths</strong></p>
+<ul>
+<li><em>Rich Context Modeling</em>: By conditioning on both sides of a position, BERT4Rec captures intricate co-occurrence patterns.</li>
+<li><em>Data Efficiency</em>: Masked positions generate more supervision signals per sequence.</li>
+<li><em>Flexibility</em>: Can predict items at arbitrary positions, enabling applications like sequential imputation or session completion beyond next-item recommendation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Weaknesses</strong></p>
+<ul>
+<li><em>Compute and Memory</em>: More parameters and bidirectional attention make it more expensive in both training and inference compared to unidirectional models.</li>
+<li><em>Training Sensitivity</em>: Requires careful hyperparameter tuning and longer training times to reach optimal performance.</li>
+<li><em>Inference Unidirectionality for Next-Item</em>: Although trained bidirectionally, predicting the next item requires inserting a [MASK] with no right context, effectively making inference unidirectional, possibly leaving some benefits unused.</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="conceptual-insights-why-bert4rec-works">
+  Conceptual Insights: Why BERT4Rec Works
+  <a class="anchor" href="#conceptual-insights-why-bert4rec-works">#</a>
+</h2>
+<h3 class="heading" id="learning-co-occurrence-vs-sequential-order">
+  Learning Co-Occurrence vs. Sequential Order
+  <a class="anchor" href="#learning-co-occurrence-vs-sequential-order">#</a>
+</h3>
+<p>Unlike unidirectional models that focus on ordering—item t predicts item t+1—BERT4Rec learns from co-occurrence patterns across sessions:</p>
+<ul>
+<li>Items A and B that consistently appear together in sessions might have high mutual information.</li>
+<li>If A often precedes B and also often follows B, unidirectional models only see one direction; BERT4Rec sees both, learning a symmetric association.</li>
+</ul>
+<p>In recommendation, co-occurrence is often more informative than strict ordering. For example, if many users watch “The Matrix” and “Inception” in any order, a bidirectional model picks up that association, regardless of which came first.</p>
+<h3 class="heading" id="overcoming-exposure-bias">
+  Overcoming Exposure Bias
+  <a class="anchor" href="#overcoming-exposure-bias">#</a>
+</h3>
+<p>Unidirectional models train to predict the next item given ground-truth history. During inference, they must use predicted items (or no items) to form history, leading to <strong>exposure bias</strong>—errors compound as the model has never seen its own mistakes. In contrast, BERT4Rec’s masking randomly hides items during training, exposing the model to situations where parts of the sequence are unknown, resulting in more robust representations when some interactions are missing or noisy (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://arxiv.org/abs/1810.04805" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">arxiv.org</a>).</p>
+<h3 class="heading" id="analogous-to-autoencoders">
+  Analogous to Autoencoders
+  <a class="anchor" href="#analogous-to-autoencoders">#</a>
+</h3>
+<p>BERT4Rec’s training resembles an <strong>autoencoder</strong>: it corrupts (masks) parts of the input and learns to reconstruct them. This formulation encourages the model to learn latent representations capturing holistic session semantics. In collaborative filtering, <strong>denoising autoencoders</strong> (e.g., CDAE) have been used for recommendation, where randomly corrupted user vectors are reconstructed (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://www.researchgate.net/profile/Fei-Sun-41/publication/332438773_BERT4Rec_Sequential_Recommendation_with_Bidirectional_Encoder_Representations_from_Transformer/links/6047567d299bf1e0786667eb/BERT4Rec-Sequential-Recommendation-with-Bidirectional-Encoder-Representations-from-Transformer.pdf" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder ...">researchgate.net</a>). BERT4Rec extends that idea to sequences of interactions with the Transformer’s bidirectional power.</p>
+<h2 class="heading" id="broader-context-from-language-to-recommendation">
+  Broader Context: From Language to Recommendation
+  <a class="anchor" href="#broader-context-from-language-to-recommendation">#</a>
+</h2>
+<h3 class="heading" id="transfer-of-ideas-across-domains">
+  Transfer of Ideas Across Domains
+  <a class="anchor" href="#transfer-of-ideas-across-domains">#</a>
+</h3>
+<p>BERT4Rec is an instance of <strong>cross-pollination</strong> between NLP and recommendation research. Historically, many breakthroughs in one field find applications in others:</p>
+<ul>
+<li><strong>Word2Vec (2013)</strong>: Initially for word embeddings, later adapted for graph embeddings, collaborative filtering, and more.</li>
+<li><strong>Convolutional Neural Networks (1995–2012)</strong>: Developed for image tasks, later adapted for text (CNNs for sentence classification) and recommendation (Caser uses convolution to model user-item sequences).</li>
+<li><strong>Attention Mechanisms (2014–2017)</strong>: Originating in machine translation, now used in recommendation (e.g., SASRec, BERT4Rec, and many variants).</li>
+</ul>
+<p>The flow of ideas mirrors human creativity: when we learn a concept in one context, we often find analogous patterns in another.</p>
+<p>Analogy: Leonardo da Vinci studied bird flight to design flying machines. Similarly, BERT4Rec studies how Transformers learn from language sequences to design better user modeling systems.</p>
+<h3 class="heading" id="historical-perspective-the-rise-of-pre-training">
+  Historical Perspective: The Rise of Pre-Training
+  <a class="anchor" href="#historical-perspective-the-rise-of-pre-training">#</a>
+</h3>
+<p>In both language and recommendation, there is a shift from <strong>task-specific training</strong> to <strong>pre-training + fine-tuning</strong>:</p>
+<ul>
+<li>In NLP, models like ELMo (2018), GPT (2018), and BERT (2018–2019) introduced large-scale pre-training on massive unlabeled corpora, followed by fine-tuning on downstream tasks (<a href="https://arxiv.org/abs/1810.04805" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">arxiv.org</a>, <a href="https://aclanthology.org/N19-1423/" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">aclanthology.org</a>).</li>
+<li>In recommendation, early models trained from scratch on each dataset. Now, researchers explore <strong>pre-training on large interaction logs</strong> to learn general user behavior patterns, then fine-tune on specific domains (e.g., news, movies). BERT4Rec’s Cloze objective could be viewed as a form of self-supervised pre-training, although in the original work they trained on the target dataset from scratch (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>).</li>
+</ul>
+<p>This trend reflects a broader movement in AI: capturing general knowledge from large data and adapting it to specific tasks, mirroring human learning—children first learn language generally, then apply it to specialized domains like mathematics or science.</p>
+<h2 class="heading" id="limitations-and-challenges">
+  Limitations and Challenges
+  <a class="anchor" href="#limitations-and-challenges">#</a>
+</h2>
+<h3 class="heading" id="computational-complexity">
+  Computational Complexity
+  <a class="anchor" href="#computational-complexity">#</a>
+</h3>
+<p>BERT4Rec’s bidirectional attention has <strong>quadratic</strong> time and memory complexity with respect to sequence length. In long sessions (e.g., browsing logs with hundreds of items), this becomes a bottleneck. Several strategies mitigate this:</p>
+<ul>
+<li><strong>Truncated Histories</strong>: Only consider the last <em>L</em> items (e.g., L = 200).</li>
+<li><strong>Segmented or Sliding Windows</strong>: Process overlapping windows of fixed length rather than the entire history.</li>
+<li><strong>Efficient Attention Variants</strong>: Use sparse attention (e.g., Linformer, Performer) to reduce complexity from O(L²) to O(L log L) or O(L) (<a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>).</li>
+</ul>
+<p>Nonetheless, these require extra engineering and can affect performance if important interactions get truncated.</p>
+<h3 class="heading" id="training-sensitivity-and-hyperparameters">
+  Training Sensitivity and Hyperparameters
+  <a class="anchor" href="#training-sensitivity-and-hyperparameters">#</a>
+</h3>
+<p>As noted by Petrov and Macdonald (2022), BERT4Rec’s performance is sensitive to:</p>
+<ul>
+<li><strong>Number of Training Epochs</strong>: Standard schedules may under-train the model.</li>
+<li><strong>Learning Rate Schedules</strong>: Warm-up steps followed by linear decay often yield stable performance.</li>
+<li><strong>Batch Size and Mask Ratio</strong>: Larger batches and masking too many positions can hinder learning.</li>
+<li><strong>Negative Sampling Effects</strong>: Overconfidence in ranking due to unbalanced positive/negative sampling can lead to suboptimal results; alternative loss functions (e.g., gBCE) can mitigate this (<a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>, <a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>).</li>
+</ul>
+<p>This contrasts with smaller unidirectional models like SASRec, which often converge faster and require fewer tuning efforts.</p>
+<h3 class="heading" id="cold-start-and-long-tail-items">
+  Cold-Start and Long-Tail Items
+  <a class="anchor" href="#cold-start-and-long-tail-items">#</a>
+</h3>
+<p>Like many collaborative filtering methods, BERT4Rec struggles with:</p>
+<ul>
+<li><strong>Cold-Start Users</strong>: Users with very short or no interaction history. Masked predictions require context—if there’s no context, predictions degrade.</li>
+<li><strong>Cold-Start Items</strong>: Items with very few interactions. Their embeddings are not well trained, making them less likely to be predicted.</li>
+<li><strong>Long-Tail Distribution</strong>: Most items appear infrequently; BERT4Rec can overfit popular items seen many times in training, biasing recommendations.</li>
+</ul>
+<p>Mitigations include:</p>
+<ul>
+<li>Incorporating <strong>content features</strong> (e.g., item metadata, text descriptions) through hybrid models.</li>
+<li>Using <strong>meta-learning</strong> to quickly adapt to new items or users.</li>
+<li>Employing <strong>data augmentation</strong> (e.g., synthetic interactions) to enrich representations.</li>
+</ul>
+<h3 class="heading" id="interpretability">
+  Interpretability
+  <a class="anchor" href="#interpretability">#</a>
+</h3>
+<p>Transformers are often regarded as “black boxes.” While attention weights can sometimes be visualized to show which items influence predictions, they do not guarantee human-interpretable explanations. Efforts to explain recommendation via attention often reveal that attention scores do not always align with intuitive importance (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>). For stakeholders demanding transparency, additional interpretability methods (e.g., counterfactual explanations, post-hoc analysis) may be needed.</p>
+<h2 class="heading" id="variants-and-extensions">
+  Variants and Extensions
+  <a class="anchor" href="#variants-and-extensions">#</a>
+</h2>
+<h3 class="heading" id="incorporating-side-information">
+  Incorporating Side Information
+  <a class="anchor" href="#incorporating-side-information">#</a>
+</h3>
+<p>BERT4Rec can be extended to use side features:</p>
+<ul>
+<li><strong>User Features</strong>: Demographics, location, device, etc.</li>
+<li><strong>Item Features</strong>: Category, price, textual description, images.</li>
+<li><strong>Session Context</strong>: Time gaps, device changes, location transitions.</li>
+</ul>
+<p>One approach is to concatenate side feature embeddings with item embeddings at each position, then feed the combined vector into the Transformer (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>). Alternatively, one can use separate Transformer streams for different modalities and then merge them (e.g., multi-modality Transformers).</p>
+<h3 class="heading" id="pre-training-on-large-scale-logs">
+  Pre-Training on Large-Scale Logs
+  <a class="anchor" href="#pre-training-on-large-scale-logs">#</a>
+</h3>
+<p>Instead of training BERT4Rec from scratch on a target dataset, it can be <strong>pre-trained</strong> on massive generic interaction logs (e.g., clicks across many categories) and <strong>fine-tuned</strong> on a domain-specific dataset (e.g., music). Pre-training tasks might include:</p>
+<ul>
+<li><strong>Masked Item Prediction</strong> (as usual).</li>
+<li><strong>Segment Prediction</strong>: Predict whether a sequence segment belongs to the same user.</li>
+<li><strong>Next Session Prediction</strong>: Predict which next session a user will have.</li>
+</ul>
+<p>After pre-training, the model adapts faster to downstream tasks, especially in data-sparse domains. This mimics BERT’s success in NLP.</p>
+<h3 class="heading" id="combining-with-contrastive-learning">
+  Combining with Contrastive Learning
+  <a class="anchor" href="#combining-with-contrastive-learning">#</a>
+</h3>
+<p>Recent trends in self-supervised learning for recommendation incorporate <strong>contrastive objectives</strong>, encouraging similar user sequences or items to have similar representations. One can combine BERT4Rec’s Cloze objective with contrastive losses (e.g., SimCLR, MoCo) to further improve generalization:</p>
+<ul>
+<li><strong>Sequence-Level Contrast</strong>: Represent a user session by pooling BERT4Rec’s hidden states; contrast similar sessions against dissimilar ones.</li>
+<li><strong>Item-Level Contrast</strong>: Encourage items co-occurring frequently to have similar embeddings.</li>
+</ul>
+<p>Contrastive learning can mitigate representation collapse and improve robustness.</p>
+<h3 class="heading" id="efficient-transformer-variants">
+  Efficient Transformer Variants
+  <a class="anchor" href="#efficient-transformer-variants">#</a>
+</h3>
+<p>To handle long sequences more efficiently:</p>
+<ul>
+<li><strong>Linformer</strong>: Projects keys and values to a lower dimension before computing attention, reducing complexity from O(L²) to O(L) (<a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>).</li>
+<li><strong>Performer</strong>: Uses kernel methods to approximate softmax attention linearly in sequence length.</li>
+<li><strong>Longformer</strong>: Employs sliding window (local) attention and global tokens.</li>
+<li><strong>Reformer</strong>: Uses locality-sensitive hashing to reduce attention costs.</li>
+</ul>
+<p>These variants can be plugged into BERT4Rec’s framework to handle longer sessions while retaining bidirectional context.</p>
+<h2 class="heading" id="future-directions">
+  Future Directions
+  <a class="anchor" href="#future-directions">#</a>
+</h2>
+<h3 class="heading" id="personalization-and-diversity">
+  Personalization and Diversity
+  <a class="anchor" href="#personalization-and-diversity">#</a>
+</h3>
+<p>While BERT4Rec focuses on accuracy metrics like HR@K and NDCG@K, real-world systems must balance <strong>personalization</strong> with <strong>diversity</strong> to avoid echo chambers. Future work could:</p>
+<ul>
+<li>Include <strong>diversity-aware objectives</strong>, penalizing recommendations that are too similar to each other.</li>
+<li>Integrate <strong>exploration strategies</strong>, e.g., adding randomness to top-K predictions to surface niche items.</li>
+<li>Leverage <strong>reinforcement learning</strong> to optimize long-term engagement rather than immediate next click.</li>
+</ul>
+<h3 class="heading" id="adaptation-to-multi-objective-settings">
+  Adaptation to Multi-Objective Settings
+  <a class="anchor" href="#adaptation-to-multi-objective-settings">#</a>
+</h3>
+<p>E-commerce platforms care about metrics beyond clicks—revenues, lifetime value, churn reduction. Extensions of BERT4Rec could incorporate:</p>
+<ul>
+<li><strong>Multi-Task Learning</strong>: Jointly predict next item and other objectives (e.g., purchase probability, churn risk).</li>
+<li><strong>Bandit Feedback</strong>: Combine BERT4Rec embeddings with contextual bandit algorithms to dynamically adapt to user feedback.</li>
+<li><strong>Causal Inference</strong>: Adjust for selection bias in logged interactions, using inverse propensity scoring with BERT4Rec representations.</li>
+</ul>
+<h3 class="heading" id="explainability-and-trust">
+  Explainability and Trust
+  <a class="anchor" href="#explainability-and-trust">#</a>
+</h3>
+<p>Building user trust in recommendations requires transparency. Research could focus on:</p>
+<ul>
+<li><strong>Attention-Based Explanations</strong>: Visualizing attention maps to show which past items influenced a recommendation.</li>
+<li><strong>Counterfactual Explanations</strong>: Explaining “if you hadn’t clicked on item A, you might not see item B recommended.”</li>
+<li><strong>User-Friendly Summaries</strong>: Summarizing session themes (e.g., “Because you watched yoga videos, we recommend this fitness product”).</li>
+</ul>
+<h3 class="heading" id="cross-seat-and-cross-device-scenarios">
+  Cross-Seat and Cross-Device Scenarios
+  <a class="anchor" href="#cross-seat-and-cross-device-scenarios">#</a>
+</h3>
+<p>Users often switch between devices (phone, laptop, TV) and contexts (work, home). Modeling these cross-seat patterns requires:</p>
+<ul>
+<li><strong>Hierarchical Transformers</strong>: One level encodes per-device sequences; another encodes cross-device transitions.</li>
+<li><strong>Time-Aware Modeling</strong>: Incorporate temporal embeddings for time gaps between interactions, using continuous time Transformers.</li>
+</ul>
+<h3 class="heading" id="hybrid-with-knowledge-graphs">
+  Hybrid with Knowledge Graphs
+  <a class="anchor" href="#hybrid-with-knowledge-graphs">#</a>
+</h3>
+<p>Many platforms maintain <strong>knowledge graphs</strong> linking items to attributes, categories, and external entities. Integrating BERT4Rec embeddings with graph neural networks (GNNs) can enrich representations:</p>
+<ul>
+<li><strong>Graph-Enhanced Embeddings</strong>: Use GNNs to initialize item embeddings based on their neighbors in the knowledge graph.</li>
+<li><strong>Joint Attention over Sequences and Graphs</strong>: Attend over historical interactions and relevant graph nodes.</li>
+</ul>
+<h2 class="heading" id="personal-reflections-and-closing-thoughts">
+  Personal Reflections and Closing Thoughts
+  <a class="anchor" href="#personal-reflections-and-closing-thoughts">#</a>
+</h2>
+<p>Building BERT4Rec felt like standing on the shoulders of giants: from Markov models that taught me the basics of transitions, to RNNs that showed me how to carry hidden state, to attention mechanisms that revealed the power of flexible context, to BERT’s bidirectional pre-training that inspired me to look at user sequences holistically. Each step deepened my understanding of how to model dynamic preferences, echoing my own journey of learning and exploration.</p>
+<p>I’ve always believed that technical advancements in AI should be connected to human-centered insights. When I see masked language models predicting words, I think of a student piecing together meaning. When I see masked item tasks predicting products, I imagine someone reconstructing their shopping trajectory, filling in forgotten steps. These analogies bridge the gap between cold mathematics and living experiences, reminding me that behind each click or purchase is a person with evolving interests, context, and purpose.</p>
+<p>BERT4Rec is not the final word in sequential recommendation. It represents a milestone—a demonstration that ideas from language modeling can transform how we think about recommendation. But as we push forward, we must keep asking: How can we make models more efficient without sacrificing nuance? How can we ensure diversity and fairness? How can we respect privacy while learning from behavior? I hope this post not only explains BERT4Rec’s mechanics but also sparks your own curiosity to explore these questions further.</p>
+<h2 class="heading" id="references-and-further-reading">
+  References and Further Reading
+  <a class="anchor" href="#references-and-further-reading">#</a>
+</h2>
+<ul>
+<li>Devlin, J., Chang, M.-W., Lee, K., &amp; Toutanova, K. (2019). <em>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</em>. In NAACL-HLT (pp. 4171–4186). (<a href="https://arxiv.org/abs/1810.04805" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">arxiv.org</a>, <a href="https://aclanthology.org/N19-1423/" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">aclanthology.org</a>)</li>
+<li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., &amp; Polosukhin, I. (2017). <em>Attention Is All You Need</em>. In NeurIPS (pp. 5998–6008). (<a href="https://arxiv.org/abs/1706.03762" title="Attention Is All You Need">arxiv.org</a>, <a href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf" title="Attention is All you Need - NIPS">papers.nips.cc</a>)</li>
+<li>Sun, F., Liu, J., Wu, J., Pei, C., Lin, X., Ou, W., &amp; Jiang, P. (2019). <em>BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer</em>. In CIKM (pp. 1441–1450). (<a href="https://arxiv.org/abs/1904.06690" title="BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer">arxiv.org</a>, <a href="https://github.com/FeiSun/BERT4Rec" title="GitHub - FeiSun/BERT4Rec: BERT4Rec: Sequential Recommendation with ...">github.com</a>)</li>
+<li>Kang, W.-C., &amp; McAuley, J. (2018). <em>Self-Attentive Sequential Recommendation</em>. In ICDM (pp. 197–206). (<a href="https://arxiv.org/abs/1808.09781" title="Self-Attentive Sequential Recommendation">arxiv.org</a>, <a href="https://cseweb.ucsd.edu/~jmcauley/pdfs/icdm18.pdf" title="Self-Attentive Sequential Recommendation - University of California ...">cseweb.ucsd.edu</a>)</li>
+<li>Petrov, A., &amp; Macdonald, C. (2022). <em>A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation</em>. arXiv:2207.07483. (<a href="https://arxiv.org/abs/2207.07483" title="A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation">arxiv.org</a>, <a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>)</li>
+<li>Petrov, A., &amp; Macdonald, C. (2023). <em>gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling</em>. arXiv:2308.07192. (<a href="https://arxiv.org/abs/2308.07192" title="gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling">arxiv.org</a>)</li>
+<li>Devlin, J., Chang, M.-W., Lee, K., &amp; Toutanova, K. (2019). <em>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</em>. arXiv:1810.04805. (<a href="https://arxiv.org/abs/1810.04805" title="BERT: Pre-training of Deep Bidirectional Transformers for Language ...">arxiv.org</a>, <a href="https://export.arxiv.org/abs/1810.04805" title="[1810.04805] BERT: Pre-training of Deep Bidirectional ... - arXiv">export.arxiv.org</a>)</li>
+<li>Devlin, J., Chang, M.-W., Lee, K., &amp; Toutanova, K. (2019). <em>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</em>. arXiv:1810.04805v1. (<a href="https://eecs.csuohio.edu/~sschung/CIS660/BERTGoogle2018.pdf" title="arXiv:1810.04805v1 [cs.CL] 11 Oct 2018 - Cleveland State University">eecs.csuohio.edu</a>, <a href="https://ar5iv.labs.arxiv.org/html/1810.04805" title="BERT : Pre-training of Deep Bidirectional Transformers for - ar5iv">ar5iv.labs.arxiv.org</a>)</li>
+<li>Kang, W.-C., &amp; McAuley, J. (2018). <em>Self-Attentive Sequential Recommendation</em>. arXiv:1808.09781. (<a href="https://arxiv.org/pdf/1808.09781" title="arXiv.org e-Print archive">arxiv.org</a>, <a href="https://ar5iv.labs.arxiv.org/html/1808.09781" title="[1808.09781] Self-Attentive Sequential Recommendation">ar5iv.labs.arxiv.org</a>)</li>
+<li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., &amp; Polosukhin, I. (2017). <em>Attention Is All You Need</em>. arXiv:1706.03762. (<a href="https://export.arxiv.org/abs/1706.03762v5" title="[1706.03762v5] Attention Is All You Need - arXiv">export.arxiv.org</a>, <a href="https://en.wikipedia.org/wiki/Attention_Is_All_You_Need" title="Attention Is All You Need - Wikipedia">en.wikipedia.org</a>)</li>
+<li>Petrov, A., &amp; Macdonald, C. (2022). <em>A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation</em>. arXiv:2207.07483.</li>
+<li>Petrov, A., &amp; Macdonald, C. (2023). <em>gSASRec: Reducing Overconfidence in Sequential Recommendation Trained with Negative Sampling</em>. arXiv:2308.07192.</li>
+<li>Hu, Y., Zhang, Y., Sun, N., Murai, M., Li, M., &amp; King, I. (2018). <em>Utilizing Long- and Short-Term Structure for Memory-Based Sequential Recommendation</em>. In WWW (pp. 1281–1290).</li>
+<li>Wu, L., Sun, X., Wang, Y., &amp; Wu, J. (2020). <em>S3-Rec: Self-Supervised Seq2Seq Autoregressive Reconstruction for Sequential Recommendation</em>. In KDD (pp. 1267–1277).</li>
+<li>Tan, Y. K., &amp; Yang, J. (2021). <em>Light-BERT4Rec: Accelerating BERT4Rec via Knowledge Distillation for Sequential Recommendation</em>. In CIKM.</li>
+<li>Yang, N., Wang, W., &amp; Zhao, J. (2021). <em>TransRec: Learning User and Item Representations for Sequential Recommendation with Multi-Head Self-Attention</em>. In Sarnoff Symposium.</li>
+<li>Bi, W., Zhu, X., Lv, H., &amp; Wang, W. (2021). <em>AdaSAS: Adaptive User Interest Modeling with Multi-Hop Self-Attention for Sequential Recommendation</em>. In RecSys.</li>
+<li>Ying, C., Fei, K., Wang, X., Wei, F., Mao, J., &amp; Gao, J. (2018). <em>Graph Convolutional Neural Networks for Web-Scale Recommender Systems</em>. In KDD. (Used as analogy for combining graph structures with sequence modeling.)</li>
+<li>He, R., &amp; McAuley, J. (2016). <em>VBPR: Visual Bayesian Personalized Ranking from Implicit Feedback</em>. In AAAI. (Illustrates use of side information in recommendation.)</li>
+<li>Wang, X., He, X., Cao, Y., Liu, M., &amp; Chua, T.-S. (2019). <em>KGAT: Knowledge Graph Attention Network for Recommendation</em>. In KDD. (Shows integration of knowledge graphs for richer item representations.)</li>
+</ul>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/arxiv/">
+                        GitHub Copilot and the Many Dimensions of Developer Productivity: A Deep Dive Into the Real-World Complexity of AI Coding
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/posts/improving-search-relevance-using-large-language-models/">
+                        Improving Search Relevance Using Large Language Models
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>

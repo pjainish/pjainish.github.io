@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    Improving Search Relevance Using Large Language Models | Jainish Patel
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/improving-search-relevance-using-large-language-models/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/improving-search-relevance-using-large-language-models/">
+  <meta property="og:site_name" content="Jainish Patel">
+  <meta property="og:title" content="Improving Search Relevance Using Large Language Models">
+  <meta property="og:description" content="Search is the invisible backbone of our digital lives. Every time you type a query into Google, search through Netflix’s catalog, or hunt for a specific product on Amazon, you’re interacting with systems designed to understand what you really want - not just what you literally typed. But here’s the thing: traditional search has always been a bit like playing telephone with a robot that only speaks in keywords.
+Large Language Models are changing this game entirely. They’re teaching search systems to understand language the way humans do - with context, nuance, and genuine comprehension. The transformation is so profound that we’re witnessing the biggest shift in information retrieval since the invention of the web crawler. Let me show you how this revolution works and why it’s reshaping everything from how we shop to how we discover knowledge.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-03T13:48:45+05:30">
+    <meta property="article:modified_time" content="2025-05-03T13:48:45+05:30">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.57df9e7d692553f966cff4593ede6b53efb74da234876bacffeac774bd572e53.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Jainish Patel</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/contact/" >
+                /Contact
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts/" >
+                /Posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts/films/" >
+                /Films
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">~</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/improving-search-relevance-using-large-language-models/">Improving Search Relevance Using Large Language Models</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Improving Search Relevance Using Large Language Models</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="author">Jainish Patel </p>
+            
+            <p class="single-date">
+              <time datetime="2025-05-03T13:48:45&#43;05:30">May 3, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <p>Search is the invisible backbone of our digital lives. Every time you type a query into Google, search through Netflix&rsquo;s catalog, or hunt for a specific product on Amazon, you&rsquo;re interacting with systems designed to understand what you really want - not just what you literally typed. But here&rsquo;s the thing: traditional search has always been a bit like playing telephone with a robot that only speaks in keywords.</p>
+<p>Large Language Models are changing this game entirely. They&rsquo;re teaching search systems to understand language the way humans do - with context, nuance, and genuine comprehension. The transformation is so profound that we&rsquo;re witnessing the biggest shift in information retrieval since the invention of the web crawler. Let me show you how this revolution works and why it&rsquo;s reshaping everything from how we shop to how we discover knowledge.</p>
+<h2 class="heading" id="the-fundamental-problem-with-traditional-search">
+  The Fundamental Problem with Traditional Search
+  <a class="anchor" href="#the-fundamental-problem-with-traditional-search">#</a>
+</h2>
+<p>Before we dive into LLMs, let&rsquo;s understand what traditional search gets wrong - and why millions of engineering hours have been spent trying to fix it. Classic search engines rely on something called <strong>lexical matching</strong> - they look for exact word matches between your query and documents. When you search for &ldquo;best Italian restaurant,&rdquo; the system hunts for documents containing those exact words, like a librarian who can only find books by looking for precise title matches.</p>
+<p>This approach breaks down in countless frustrating ways. What if someone wrote about &ldquo;excellent authentic Italian dining&rdquo; instead of using your exact words? What if you search for &ldquo;fixing my car&rsquo;s engine&rdquo; but the relevant article talks about &ldquo;automotive repair&rdquo;? What if you&rsquo;re looking for information about &ldquo;COVID-19&rdquo; but the document uses &ldquo;coronavirus&rdquo; or &ldquo;SARS-CoV-2&rdquo;? Traditional systems miss these connections because they don&rsquo;t understand that different words can express the same concept.</p>
+<p>The problem gets even more complex with <strong>vocabulary mismatch</strong> - the technical term for when searchers and content creators use different words for the same ideas. Studies show that two people will use the same keyword for the same concept only 20% of the time. This means traditional search systems miss 80% of potentially relevant content simply because of word choice differences.</p>
+<p>Even more sophisticated approaches like TF-IDF (Term Frequency-Inverse Document Frequency) and BM25, which score documents based on word importance and rarity, still operate in this keyword-matching paradigm. TF-IDF works by calculating:</p>
+<p><strong>TF-IDF(t,d) = TF(t,d) × log(N/DF(t))</strong></p>
+<p>Where TF(t,d) is the frequency of term t in document d, N is the total number of documents, and DF(t) is the number of documents containing term t. This formula helps identify documents where query terms are both frequent and rare across the corpus - a clever heuristic, but still fundamentally limited by exact word matches.</p>
+<p>The real-world impact is staggering. E-commerce sites lose billions in revenue annually because customers can&rsquo;t find products they&rsquo;re actively trying to buy. Academic researchers waste countless hours because they can&rsquo;t locate papers using slightly different terminology. Enterprise search systems fail to surface critical internal documents because teams use different jargon for the same concepts.</p>
+<h2 class="heading" id="the-semantic-revolution-how-llms-transform-search-understanding">
+  The Semantic Revolution: How LLMs Transform Search Understanding
+  <a class="anchor" href="#the-semantic-revolution-how-llms-transform-search-understanding">#</a>
+</h2>
+<p>Large Language Models solve this by creating <strong>semantic representations</strong> - mathematical fingerprints that capture meaning rather than just words. When an LLM processes text, it converts it into high-dimensional vectors (typically 768 to 4096 dimensions) where similar meanings naturally cluster together in this mathematical space.</p>
+<p>Think of it like this: imagine meaning exists in a vast landscape where concepts that are related sit close to each other. &ldquo;Car&rdquo; and &ldquo;automobile&rdquo; would be neighbors, &ldquo;happy&rdquo; and &ldquo;joyful&rdquo; would be nearby, and &ldquo;Python programming&rdquo; and &ldquo;software development&rdquo; would share the same neighborhood. But the landscape is far richer than simple synonyms - it captures relationships like &ldquo;doctor&rdquo; being close to &ldquo;hospital,&rdquo; &ldquo;stethoscope,&rdquo; and &ldquo;patient,&rdquo; even though these aren&rsquo;t synonyms.</p>
+<p>The mathematical foundation is surprisingly elegant. Each word or phrase becomes a vector <strong>v</strong> in this high-dimensional space, and similarity between concepts is measured using cosine similarity:</p>
+<p><strong>similarity(A, B) = (A · B) / (||A|| × ||B||)</strong></p>
+<p>Where A · B is the dot product and ||A|| represents the vector magnitude. This simple formula captures semantic relationships that keyword matching could never find.</p>
+<p>But here&rsquo;s where it gets really interesting: these vectors capture not just explicit relationships but also subtle contextual nuances. The word &ldquo;bank&rdquo; will have different vector representations depending on whether it appears in contexts about finance (&ldquo;bank account,&rdquo; &ldquo;loan officer&rdquo;) or geography (&ldquo;river bank,&rdquo; &ldquo;steep bank&rdquo;). This <strong>contextual sensitivity</strong> is what makes LLM-based search so powerful.</p>
+<p>The training process that creates these representations is fascinating. LLMs learn by predicting the next word in billions of text sequences, and through this process, they develop an internal understanding of how concepts relate to each other. Words that appear in similar contexts end up with similar vector representations - not because anyone explicitly taught the model that &ldquo;happy&rdquo; and &ldquo;joyful&rdquo; are related, but because both words tend to appear in contexts about positive emotions.</p>
+<h2 class="heading" id="dense-retrieval-the-core-architecture-revolution">
+  Dense Retrieval: The Core Architecture Revolution
+  <a class="anchor" href="#dense-retrieval-the-core-architecture-revolution">#</a>
+</h2>
+<p>The breakthrough came with <strong>dense retrieval</strong> systems that use LLMs to encode both queries and documents into the same semantic space. This seemingly simple idea required solving numerous technical challenges and has become the foundation of modern search systems.</p>
+<p>Here&rsquo;s how it works: When you submit a query, the system passes it through an encoder (typically a transformer model like BERT or a more recent architecture) to produce a query vector. Similarly, all documents in the search corpus have been pre-processed and converted into document vectors using the same encoder. This preprocessing step is crucial - for a large corpus like Wikipedia, this might involve encoding millions of documents, each taking milliseconds to process.</p>
+<p>Finding relevant documents becomes a nearest neighbor search in this vector space. Documents whose vectors are closest to your query vector - measured by cosine similarity - are the most semantically relevant results. What makes this powerful is that &ldquo;best Italian restaurant&rdquo; and &ldquo;top-rated authentic Italian dining&rdquo; will produce very similar vectors, even though they share no common words.</p>
+<p>But the magic really happens when you see the system handle complex queries. Consider searching for &ldquo;how to reduce anxiety before public speaking.&rdquo; Traditional systems would look for exact matches of these words. A dense retrieval system understands that documents about &ldquo;managing presentation nerves,&rdquo; &ldquo;overcoming stage fright,&rdquo; or &ldquo;confidence building for speeches&rdquo; are all highly relevant, even though they use completely different vocabulary.</p>
+<p>The technical implementation involves several sophisticated components. <strong>Query encoding</strong> must be fast since it happens in real-time when users search. <strong>Document encoding</strong> can be slower since it&rsquo;s done offline, but it needs to be consistent - the same document should always produce the same vector. <strong>Vector storage</strong> requires efficient data structures since you&rsquo;re storing millions of high-dimensional vectors. <strong>Similarity search</strong> needs to be optimized since comparing your query vector against millions of document vectors would be too slow without clever algorithms.</p>
+<h2 class="heading" id="the-architecture-wars-bi-encoder-vs-cross-encoder">
+  The Architecture Wars: Bi-encoder vs Cross-encoder
+  <a class="anchor" href="#the-architecture-wars-bi-encoder-vs-cross-encoder">#</a>
+</h2>
+<p>The field has converged on two main architectural approaches, each with distinct trade-offs that matter enormously for real-world deployment. Understanding these trade-offs is crucial because they determine everything from search speed to accuracy to cost.</p>
+<p><strong>Bi-encoders</strong> process queries and documents separately, creating independent vector representations. This separation is computationally efficient because document vectors can be pre-computed and stored, making real-time search fast. When you search, only the query needs to be encoded, and then it&rsquo;s just a matter of comparing the query vector against pre-computed document vectors.</p>
+<p>The speed advantage is massive. A bi-encoder can search through millions of documents in milliseconds because it&rsquo;s just doing vector arithmetic. This is why companies like Google and Microsoft can provide near-instantaneous search results across the entire web.</p>
+<p>However, bi-encoders miss the subtle interactions between query and document that can signal relevance. When you search for &ldquo;jaguar repair manual,&rdquo; a bi-encoder treats &ldquo;jaguar&rdquo; and &ldquo;repair manual&rdquo; as separate concepts. It might not fully understand that in this context, &ldquo;jaguar&rdquo; likely refers to the car brand rather than the animal.</p>
+<p><strong>Cross-encoders</strong> process query and document together, allowing the model to consider their interaction directly. They see the full context: &ldquo;jaguar repair manual&rdquo; as a unified concept. This produces more nuanced relevance scores because the model can reason about how the query and document relate to each other.</p>
+<p>The technical difference is profound. A cross-encoder takes concatenated text like &ldquo;[CLS] jaguar repair manual [SEP] This guide covers maintenance for Jaguar F-Type engines&hellip;&rdquo; and processes it as a single sequence. The model&rsquo;s attention mechanism can directly connect &ldquo;jaguar&rdquo; in the query with &ldquo;Jaguar F-Type&rdquo; in the document, understanding the relationship.</p>
+<p>But cross-encoders come with a severe computational cost. They require computing a new representation for every query-document pair at search time. For a query against a million-document corpus, that&rsquo;s a million separate model forward passes - far too slow for real-time search.</p>
+<p>The elegant solution? <strong>Cascade architecture</strong> that uses bi-encoders for fast initial retrieval to narrow down candidates, then applies cross-encoders for precise re-ranking of the top results. This hybrid approach captures the best of both worlds: the speed of bi-encoders for broad retrieval and the accuracy of cross-encoders for final ranking.</p>
+<h2 class="heading" id="training-llms-for-search-the-art-and-science-of-relevance">
+  Training LLMs for Search: The Art and Science of Relevance
+  <a class="anchor" href="#training-llms-for-search-the-art-and-science-of-relevance">#</a>
+</h2>
+<p>Teaching an LLM to excel at search requires sophisticated training strategies that go beyond standard language modeling. The key insight is that relevance is inherently comparative - knowing that document A is more relevant than document B for a given query matters more than knowing the absolute relevance of either document.</p>
+<p><strong>Contrastive learning</strong> has emerged as the dominant training paradigm, and it&rsquo;s beautifully intuitive once you understand it. For each query, the model sees positive examples (relevant documents) and negative examples (irrelevant ones), learning to pull positive pairs closer together in vector space while pushing negative pairs apart.</p>
+<p>The loss function typically looks like:</p>
+<p><strong>L = -log(exp(sim(q, d+) / τ) / Σ exp(sim(q, di) / τ))</strong></p>
+<p>Where q is the query, d+ is a relevant document, di represents all documents in the batch, and τ is a temperature parameter that controls the sharpness of the distribution.</p>
+<p>This mathematical formulation captures something profound about how humans think about relevance. We don&rsquo;t judge documents in isolation - we compare them. When you search for &ldquo;best pizza NYC,&rdquo; you&rsquo;re not looking for documents that meet some absolute standard of pizza-related relevance. You want the documents that are most relevant compared to all other possible documents.</p>
+<p>The challenge is getting high-quality training data. Early systems used click-through data - assuming that if users clicked on a result, it was relevant. But this creates biases. Users tend to click on results that appear higher in the search rankings, regardless of actual relevance. They&rsquo;re also more likely to click on familiar-looking results or those with appealing titles.</p>
+<p>More sophisticated approaches use <strong>hard negative mining</strong> - deliberately including challenging negative examples that are topically related but not truly relevant. This forces the model to make finer distinctions and improves its precision. For a query about &ldquo;Python programming,&rdquo; easy negatives might be documents about biology or cooking. Hard negatives would be documents about other programming languages or general computer science topics.</p>
+<p>The training process itself is computationally intensive. Modern search models are trained on datasets with millions of query-document pairs, using clusters of GPUs for weeks or months. The computational cost is enormous - training a competitive search model can cost hundreds of thousands of dollars in cloud computing resources.</p>
+<p>But the results justify the investment. Well-trained search models can achieve 40-60% improvements in relevance metrics compared to traditional systems. More importantly, they handle the long tail of queries - the millions of unique searches that users perform daily but that traditional systems struggle with.</p>
+<h2 class="heading" id="multi-vector-and-late-interaction-beyond-single-vectors">
+  Multi-Vector and Late Interaction: Beyond Single Vectors
+  <a class="anchor" href="#multi-vector-and-late-interaction-beyond-single-vectors">#</a>
+</h2>
+<p>Recent innovations have moved beyond single vector representations toward more nuanced approaches that preserve fine-grained information while maintaining computational efficiency. This represents a fundamental shift in how we think about semantic search.</p>
+<p><strong>ColBERT</strong> (Contextualized Late Interaction over BERT) represents both queries and documents as collections of vectors - one for each token - rather than compressing everything into a single vector. This seemingly simple change solves a major problem with single-vector approaches: information loss.</p>
+<p>When you compress an entire document into a single vector, you inevitably lose details. A document about &ldquo;machine learning applications in healthcare&rdquo; might have its vector positioned somewhere between &ldquo;machine learning&rdquo; and &ldquo;healthcare&rdquo; in the semantic space, but important nuances about specific applications or methodologies get lost.</p>
+<p>ColBERT preserves this information by keeping separate vectors for each token. During retrieval, it computes fine-grained interactions between query and document tokens, finding the maximum similarity between each query token and all document tokens. This approach captures term-level evidence while maintaining the semantic understanding of transformer models.</p>
+<p>The scoring function becomes:</p>
+<p><strong>Score(q, d) = Σ max(Eq,i · Ed,j)</strong></p>
+<p>Where Eq,i and Ed,j are token-level embeddings. This means each query token finds its best match in the document, and the overall score is the sum of these individual matches.</p>
+<p>The practical impact is remarkable. ColBERT can understand that a query for &ldquo;deep learning optimization techniques&rdquo; matches a document discussing &ldquo;neural network training algorithms&rdquo; because individual query tokens find strong matches with semantically related document tokens, even when the overall phrasing is different.</p>
+<p>But ColBERT introduces new challenges. Storage requirements increase dramatically since you&rsquo;re storing vectors for every token in every document. A single document might require hundreds of vectors instead of just one. Search becomes more complex since you need to compute interactions between query and document token sets.</p>
+<p>The engineering solutions are clever. <strong>Compression techniques</strong> reduce the storage overhead by clustering similar token vectors and storing cluster centroids. <strong>Efficient interaction algorithms</strong> speed up the max-pooling operations required for scoring. <strong>Caching strategies</strong> store frequently accessed token vectors in memory for faster retrieval.</p>
+<h2 class="heading" id="handling-multi-modal-search-beyond-text">
+  Handling Multi-Modal Search: Beyond Text
+  <a class="anchor" href="#handling-multi-modal-search-beyond-text">#</a>
+</h2>
+<p>Modern search increasingly involves multiple modalities - text, images, code, audio, and video. Users expect to search across all these content types seamlessly, and LLMs trained on multi-modal data are making this possible.</p>
+<p><strong>CLIP</strong> (Contrastive Language-Image Pre-training) pioneered this approach for text-image search. The model learns joint representations where semantically related text and images occupy nearby positions in the shared vector space. This enables queries like &ldquo;sunset over mountains&rdquo; to retrieve relevant images, even if those images were never explicitly tagged with those words.</p>
+<p>The training process for CLIP is fascinating. The model sees millions of image-text pairs scraped from the web and learns to associate images with their captions. Through this process, it develops an understanding of visual concepts that can be expressed in language. A photo of a golden retriever becomes associated not just with the text &ldquo;golden retriever&rdquo; but with related concepts like &ldquo;dog,&rdquo; &ldquo;pet,&rdquo; &ldquo;furry,&rdquo; and &ldquo;friendly.&rdquo;</p>
+<p>This capability is transforming e-commerce search. Instead of requiring manual tagging of product images, systems can now understand visual queries. Users can search for &ldquo;red dress with floral pattern&rdquo; and find relevant products even if the product descriptions don&rsquo;t use those exact words. The system can see the red color and floral pattern in the images and match them to the textual query.</p>
+<p>For code search, models like <strong>CodeBERT</strong> apply similar principles, understanding that a query for &ldquo;sort a list in Python&rdquo; should match code snippets that implement sorting algorithms, regardless of variable names or specific syntax variations. The model learns that <code>array.sort()</code>, <code>sorted(my_list)</code>, and custom sorting implementations are all semantically related to the concept of sorting.</p>
+<p>The technical challenges are substantial. Different modalities have vastly different characteristics - images are high-dimensional pixel arrays, text is sequential tokens, code has syntactic structure, and audio has temporal dynamics. Creating unified representations requires careful architectural design and massive amounts of training data.</p>
+<p><strong>Vision-language models</strong> use shared transformer architectures that can process both visual and textual inputs. <strong>Multi-modal fusion</strong> techniques combine information from different modalities at various levels - early fusion concatenates raw inputs, late fusion combines processed representations, and hybrid approaches use attention mechanisms to dynamically weight different modalities.</p>
+<p>The impact extends beyond search. Multi-modal understanding enables <strong>content generation</strong> (generating captions for images), <strong>cross-modal retrieval</strong> (finding images that match text descriptions), and <strong>content understanding</strong> (analyzing videos to extract searchable information).</p>
+<h2 class="heading" id="query-understanding-parsing-intent-and-context">
+  Query Understanding: Parsing Intent and Context
+  <a class="anchor" href="#query-understanding-parsing-intent-and-context">#</a>
+</h2>
+<p>LLMs don&rsquo;t just improve document matching - they transform query understanding itself. Traditional systems treated queries as bags of keywords, but LLMs can parse intent, identify entities, extract relationships, and understand context in ways that feel almost magical.</p>
+<p>Consider the query &ldquo;Apple stock price yesterday.&rdquo; This simple seven-word query contains multiple layers of meaning that an LLM-powered system can parse:</p>
+<ol>
+<li><strong>Entity recognition</strong>: &ldquo;Apple&rdquo; refers to Apple Inc., the technology company, not the fruit</li>
+<li><strong>Intent classification</strong>: This is a factual information query, specifically about financial data</li>
+<li><strong>Temporal understanding</strong>: &ldquo;Yesterday&rdquo; provides specific temporal context</li>
+<li><strong>Implicit requirements</strong>: The user wants current, accurate financial information</li>
+</ol>
+<p>An LLM-powered system can recognize all these elements and trigger specialized retrieval paths, combining general web search with real-time financial data APIs. It might even understand that if the query is made on a Monday, &ldquo;yesterday&rdquo; refers to Friday (since markets are closed on weekends).</p>
+<p><strong>Query expansion</strong> becomes far more sophisticated. Instead of simple synonym replacement, LLMs can generate semantically related terms that preserve the original intent while broadening coverage. A query about &ldquo;sustainable energy&rdquo; might be expanded to include &ldquo;renewable power,&rdquo; &ldquo;clean electricity,&rdquo; &ldquo;green technology,&rdquo; &ldquo;solar panels,&rdquo; &ldquo;wind turbines,&rdquo; and &ldquo;energy efficiency.&rdquo;</p>
+<p>But the expansion is contextually aware. The same query in different contexts might expand differently. &ldquo;Sustainable energy&rdquo; in an academic context might include terms like &ldquo;photovoltaic efficiency&rdquo; and &ldquo;grid integration,&rdquo; while in a consumer context it might include &ldquo;solar installation&rdquo; and &ldquo;energy savings.&rdquo;</p>
+<p><strong>Ambiguity resolution</strong> is another area where LLMs excel. The query &ldquo;Java&rdquo; could refer to the programming language, the Indonesian island, or the type of coffee. Traditional systems might return results for all three, forcing users to sort through irrelevant results. LLMs can use context clues to disambiguate - if the user&rsquo;s previous queries were about programming, &ldquo;Java&rdquo; likely refers to the programming language.</p>
+<p>The system might also consider <strong>user context</strong> without storing personal information. If the query comes from an IP address associated with a university computer science department, the programming language interpretation becomes more likely. If it comes from a travel website, the island interpretation gains weight.</p>
+<p><strong>Conversational search</strong> represents the next frontier. Instead of treating each query in isolation, systems can maintain context across multiple interactions. A user might start with &ldquo;best restaurants in Paris,&rdquo; then follow up with &ldquo;which ones have vegetarian options?&rdquo; The system understands that &ldquo;ones&rdquo; refers to the previously mentioned Paris restaurants.</p>
+<h2 class="heading" id="personalization-through-contextual-embeddings">
+  Personalization Through Contextual Embeddings
+  <a class="anchor" href="#personalization-through-contextual-embeddings">#</a>
+</h2>
+<p>LLMs enable personalized search that adapts to individual users without compromising privacy. This represents a significant advancement over traditional personalization approaches that required storing detailed user profiles and behavioral histories.</p>
+<p>Instead of storing explicit user profiles, systems can create <strong>contextual embeddings</strong> that incorporate recent search history, location, behavioral signals, and preferences directly into the query representation. This approach keeps user data ephemeral while still providing personalized results.</p>
+<p>The personalized query vector becomes:</p>
+<p><strong>q_personalized = α × q_base + β × q_context + γ × q_temporal</strong></p>
+<p>Where q_base is the original query embedding, q_context captures personalization signals, q_temporal includes time-sensitive factors, and α, β, γ are learned weighting parameters that determine the influence of each component.</p>
+<p>The personalization signals can be remarkably subtle yet powerful. If a user frequently searches for technical programming content, their query for &ldquo;Python&rdquo; will be biased toward programming-related results. If they often search for cooking recipes, the same query might lean toward food-related content.</p>
+<p><strong>Implicit personalization</strong> works through behavioral signals that don&rsquo;t require explicit user input. Click-through patterns, dwell time on results, query reformulations, and scrolling behavior all provide signals about user preferences and intent. LLMs can incorporate these signals without storing personally identifiable information.</p>
+<p>The privacy implications are significant. Traditional personalization required building detailed user profiles that posed privacy risks and regulatory challenges. LLM-based personalization can work with ephemeral context, processing personalization signals in real-time without long-term storage.</p>
+<p><strong>Federated learning</strong> approaches allow personalization models to improve from user interactions without centralizing personal data. Local models adapt to individual user patterns while contributing to global model improvements through privacy-preserving techniques like differential privacy.</p>
+<p>The business impact is substantial. Personalized search improves user satisfaction, increases engagement, and drives better business outcomes. E-commerce sites see higher conversion rates when search results match user preferences. Content platforms achieve better user retention when recommendations align with individual tastes.</p>
+<h2 class="heading" id="real-time-learning-and-adaptation">
+  Real-Time Learning and Adaptation
+  <a class="anchor" href="#real-time-learning-and-adaptation">#</a>
+</h2>
+<p>Unlike traditional search systems that require manual tuning and periodic retraining, LLM-based search can adapt continuously to changing user behavior, emerging topics, and new content patterns. This adaptability is crucial in our rapidly evolving information landscape.</p>
+<p><strong>Online learning</strong> techniques allow models to incorporate feedback from user interactions in real-time. When users click on search results, skip over others, or reformulate queries, these signals provide training data for continuous model improvement. The challenge is updating large language models efficiently without full retraining - a computationally expensive process that can take weeks.</p>
+<p>Techniques like <strong>LoRA</strong> (Low-Rank Adaptation) and <strong>prefix tuning</strong> provide solutions by updating only small portions of the model parameters. LoRA works by adding low-rank matrices to the model&rsquo;s weight matrices, allowing adaptation with minimal computational overhead:</p>
+<p><strong>W_adapted = W_original + A × B</strong></p>
+<p>Where W_original is the original weight matrix, and A and B are small matrices whose product approximates the needed weight updates. This approach can achieve 90% of full fine-tuning performance while updating less than 1% of the model parameters.</p>
+<p><strong>Gradient-based meta-learning</strong> enables models to quickly adapt to new domains or query types with minimal examples. The model learns not just to perform search, but to learn how to adapt its search behavior based on new signals.</p>
+<p>The feedback loop operates at multiple timescales. <strong>Immediate adaptation</strong> happens within seconds of user interactions, adjusting result rankings based on real-time signals. <strong>Short-term adaptation</strong> occurs over hours or days, incorporating patterns from recent user sessions. <strong>Long-term adaptation</strong> happens over weeks or months, capturing fundamental shifts in user behavior or content trends.</p>
+<p><strong>Trending topic detection</strong> becomes automatic as the system notices unusual query patterns and content interactions. When a major news event occurs, the system can quickly identify and boost relevant content without manual intervention. This is particularly important for breaking news, viral content, and seasonal topics.</p>
+<p>The technical infrastructure required is sophisticated. <strong>Streaming data processing</strong> systems handle millions of user interactions per second. <strong>Distributed training</strong> frameworks update model parameters across multiple servers. <strong>Version control</strong> systems manage model updates while ensuring consistent user experiences.</p>
+<h2 class="heading" id="scaling-challenges-engineering-for-internet-scale">
+  Scaling Challenges: Engineering for Internet Scale
+  <a class="anchor" href="#scaling-challenges-engineering-for-internet-scale">#</a>
+</h2>
+<p>Deploying LLMs for search at internet scale presents unique engineering challenges that push the boundaries of what&rsquo;s computationally feasible. The numbers are staggering - Google processes over 8 billion searches per day, each requiring millisecond response times across a corpus of trillions of documents.</p>
+<p>The computational cost of encoding queries and performing vector similarity search over billions of documents requires careful optimization at every level of the stack. <strong>Query encoding</strong> must complete in single-digit milliseconds, which means careful model architecture choices and optimized inference pipelines.</p>
+<p><strong>Approximate nearest neighbor</strong> (ANN) algorithms like FAISS, Annoy, and ScaNN make vector search tractable by trading small amounts of recall for dramatic speedups. These algorithms use clever data structures and approximation techniques to avoid computing exact distances between all vector pairs.</p>
+<p>FAISS, developed by Meta, uses techniques like <strong>locality-sensitive hashing</strong> and <strong>product quantization</strong> to achieve sub-linear search times. The key insight is that you don&rsquo;t need to find the absolute nearest neighbors - you just need to find vectors that are close enough to represent the most relevant documents.</p>
+<p><strong>Quantization</strong> techniques reduce memory requirements and speed up computations by representing vectors with lower precision. Instead of storing 32-bit floating-point values, systems might use 8-bit integers or even binary representations. The storage savings are enormous - 8-bit quantization reduces memory requirements by 75% while maintaining most of the search quality.</p>
+<p><strong>Hierarchical search</strong> architectures split large document collections into clusters, first identifying relevant clusters before searching within them. This reduces the effective search space and enables sub-linear scaling. The clustering process itself uses sophisticated algorithms to ensure that semantically similar documents end up in the same clusters.</p>
+<p><strong>Distributed search</strong> spreads the workload across multiple servers, with each server handling a subset of the document corpus. Query processing becomes a distributed computing problem, requiring careful load balancing and result aggregation.</p>
+<p>The <strong>caching strategies</strong> are multilayered. Popular queries are cached at the query level, frequent document vectors are cached in memory, and intermediate results are cached at various stages of the processing pipeline. Cache hit rates above 90% are common for web search workloads.</p>
+<p><strong>Hardware optimization</strong> plays a crucial role. Modern search systems use specialized hardware like GPUs and TPUs for vector operations, high-memory servers for storing vector indices, and fast storage systems for rapid data access. The hardware costs are substantial - a competitive web search system might require thousands of servers and millions of dollars in hardware.</p>
+<h2 class="heading" id="quality-measurement-and-evaluation-beyond-traditional-metrics">
+  Quality Measurement and Evaluation: Beyond Traditional Metrics
+  <a class="anchor" href="#quality-measurement-and-evaluation-beyond-traditional-metrics">#</a>
+</h2>
+<p>Measuring search quality with LLMs requires rethinking traditional evaluation approaches. The semantic understanding capabilities of LLMs create new opportunities for both better search results and more sophisticated evaluation methods.</p>
+<p><strong>NDCG</strong> (Normalized Discounted Cumulative Gain) and <strong>MRR</strong> (Mean Reciprocal Rank) remain important foundational metrics, but they don&rsquo;t capture the nuanced improvements that LLMs bring to search. NDCG measures the quality of ranked lists by considering both relevance and position:</p>
+<p><strong>NDCG@k = DCG@k / IDCG@k</strong></p>
+<p>where DCG@k is the discounted cumulative gain up to position k, and IDCG@k is the ideal DCG for perfect ranking.</p>
+<p>However, these metrics assume that relevance judgments are binary or based on simple relevance scales. LLM-based search systems can provide more nuanced understanding of relevance that traditional metrics miss.</p>
+<p><strong>Semantic similarity</strong> between retrieved and expected results provides a new evaluation dimension. Instead of just measuring whether the correct documents were retrieved, systems can evaluate whether the retrieved documents are semantically related to the expected results. This is particularly valuable for evaluating query expansion and semantic matching capabilities.</p>
+<p><strong>Query-document relevance</strong> can be scored by separate LLMs trained specifically for relevance assessment. These models can provide more consistent and scalable relevance judgments than human annotators, especially for large-scale evaluation datasets.</p>
+<p><strong>User satisfaction</strong> metrics derived from behavioral data provide the ultimate measure of search quality. Metrics like <strong>success rate</strong> (percentage of queries that result in user satisfaction), <strong>time to success</strong> (how long users spend before finding what they need), and <strong>reformulation rate</strong> (how often users need to modify their queries) capture the real-world impact of search improvements.</p>
+<p><strong>Failure analysis</strong> becomes more sophisticated with LLMs. Instead of just identifying queries that perform poorly, systems can analyze why they fail and categorize failure modes. Common categories include <strong>vocabulary mismatch</strong> (user and document use different terms), <strong>intent ambiguity</strong> (query has multiple possible interpretations), <strong>knowledge gaps</strong> (relevant information doesn&rsquo;t exist in the corpus), and <strong>temporal mismatches</strong> (user wants current information but corpus is outdated).</p>
+<p><strong>A/B testing</strong> remains crucial, but it&rsquo;s complemented by more sophisticated analysis techniques. <strong>Interleaving experiments</strong> mix results from different systems to get more sensitive measurements of relative quality. <strong>Long-term impact studies</strong> measure how search improvements affect user behavior over weeks or months, not just immediate click-through rates.</p>
+<p><strong>Fairness and bias evaluation</strong> becomes critical as LLMs can perpetuate or amplify biases present in training data. Search systems need to be evaluated for demographic fairness, ensuring that results don&rsquo;t systematically favor or disadvantage particular groups. This requires specialized evaluation datasets and metrics that can detect subtle forms of bias.</p>
+<h2 class="heading" id="emerging-frontiers-the-future-of-intelligent-search">
+  Emerging Frontiers: The Future of Intelligent Search
+  <a class="anchor" href="#emerging-frontiers-the-future-of-intelligent-search">#</a>
+</h2>
+<p>The field continues evolving at a breathtaking pace, with new developments emerging monthly that reshape what&rsquo;s possible in information retrieval. The convergence of large language models with search is opening entirely new paradigms for how we interact with information.</p>
+<p><strong>Retrieval-augmented generation</strong> (RAG) systems represent a fundamental shift from traditional search. Instead of returning a list of documents, these systems combine LLM-based search with generative capabilities to synthesize answers from multiple retrieved documents. Users get direct answers to their questions, backed by retrieved evidence.</p>
+<p>The architecture is elegant: when you ask &ldquo;What are the health benefits of regular exercise?&rdquo;, the system first retrieves relevant documents from medical literature, fitness research, and health databases. Then a generative LLM synthesizes this information into a coherent answer, citing specific sources and providing a comprehensive response.</p>
+<p>RAG systems can handle complex queries that require synthesizing information from multiple sources. A query like &ldquo;Compare the environmental impact of electric vehicles versus traditional cars, considering manufacturing, operation, and disposal&rdquo; would require gathering information from multiple documents and combining it into a coherent comparison.</p>
+<p><strong>Neural information retrieval</strong> is moving toward end-to-end learning where retrieval and ranking are jointly optimized. Traditional systems treat retrieval and ranking as separate problems, but end-to-end approaches learn both simultaneously, potentially achieving better overall performance.</p>
+<p><strong>Sparse-dense hybrid</strong> models combine the interpretability of traditional keyword matching with the semantic power of dense vectors. These systems maintain both sparse representations (traditional keyword features) and dense representations (semantic vectors), combining them through learned weighting mechanisms.</p>
+<p>The hybrid approach addresses a key limitation of pure dense retrieval: the &ldquo;black box&rdquo; problem. With traditional keyword matching, you can understand why a document was retrieved - it contained the query terms. With dense retrieval, the reasoning is opaque - documents are retrieved based on high-dimensional vector similarities that humans can&rsquo;t easily interpret.</p>
+<p>Hybrid systems provide the best of both worlds: the recall improvements of semantic search with the interpretability of keyword matching. They can also handle queries that require exact matches (like product model numbers or specific phrases) while still providing semantic understanding for natural language queries.</p>
+<p><strong>Federated search</strong> across multiple specialized corpora using shared LLM representations promises to break down silos between different search systems. Currently, users must search separately across web search engines, academic databases, internal company documents, and social media platforms. Federated search would enable unified discovery across these previously disconnected information sources.</p>
+<p>The technical challenges are substantial. Different corpora have different formats, update frequencies, access controls, and relevance patterns. A unified search system needs to handle these differences while providing consistent user experiences.</p>
+<p><strong>Multimodal search expansion</strong> is extending beyond text and images to include audio, video, and interactive content. Users might search for &ldquo;examples of good public speaking&rdquo; and retrieve not just articles about public speaking but also video examples, audio recordings of great speeches, and interactive tutorials.</p>
+<p><strong>Conversational search interfaces</strong> are becoming more sophisticated, supporting multi-turn interactions where users can refine their queries through natural dialogue. Instead of struggling to formulate the perfect query, users can engage in a conversation with the search system, gradually narrowing down to exactly what they need.</p>
+<p><strong>Personalized knowledge graphs</strong> combine the structured representation of knowledge graphs with the personalization capabilities of LLMs. These systems build dynamic, personalized views of information that adapt to individual user interests and expertise levels.</p>
+<p><strong>Real-time search</strong> over streaming data is becoming more important as information becomes increasingly dynamic. Social media posts, news articles, stock prices, and user-generated content are constantly changing, and search systems need to index and search this information in real-time.</p>
+<h2 class="heading" id="the-broader-impact-transforming-how-we-interact-with-information">
+  The Broader Impact: Transforming How We Interact with Information
+  <a class="anchor" href="#the-broader-impact-transforming-how-we-interact-with-information">#</a>
+</h2>
+<p>The transformation of search through LLMs extends far beyond technical improvements - it&rsquo;s fundamentally changing how we discover, learn, and interact with information. The implications ripple through education, commerce, research, and daily life in ways we&rsquo;re only beginning to understand.</p>
+<p><strong>Educational search</strong> is becoming more like having a knowledgeable tutor. Instead of returning a list of potentially relevant documents, LLM-powered educational search can provide explanations tailored to the user&rsquo;s level of understanding, suggest follow-up questions, and guide learning pathways. A student struggling with calculus can get not just links to calculus resources, but explanations that build on their existing knowledge and address their specific confusion.</p>
+<p><strong>Scientific research</strong> is being accelerated by LLMs that can search across vast corpora of academic literature, identify connections between disparate fields, and suggest novel research directions. Researchers can query across millions of papers using natural language, finding relevant work even when it uses different terminology or comes from unexpected disciplines.</p>
+<p><strong>Enterprise search</strong> is solving the chronic problem of organizational knowledge silos. Companies often have valuable information scattered across documents, databases, wikis, and email archives, but employees can&rsquo;t find what they need. LLM-powered enterprise search can understand context, navigate organizational jargon, and surface relevant information regardless of where it&rsquo;s stored.</p>
+<p><strong>E-commerce search</strong> is becoming more conversational and helpful. Instead of forcing users to navigate complex category hierarchies or guess the right keywords, shopping platforms can understand natural language queries like &ldquo;comfortable running shoes for flat feet under $100&rdquo; and provide relevant results even when product descriptions don&rsquo;t use those exact terms.</p>
+<p><strong>Healthcare information retrieval</strong> is improving patient outcomes by helping both healthcare providers and patients find relevant medical information more effectively. Doctors can quickly search through medical literature to find the latest treatment protocols, while patients can get reliable health information without wading through irrelevant or potentially harmful content.</p>
+<p>The <strong>democratization of information access</strong> is perhaps the most profound impact. High-quality search capabilities that were once available only to companies with massive technical resources are becoming accessible to smaller organizations and individuals. This levels the playing field and enables innovation in unexpected places.</p>
+<p><strong>Accessibility improvements</strong> are making information more available to users with different needs and abilities. LLM-powered search can provide results in different formats, reading levels, and languages, making information more accessible to diverse audiences.</p>
+<p>But the transformation also brings challenges. <strong>Information quality</strong> becomes more important as LLMs can make low-quality information seem authoritative. <strong>Bias amplification</strong> is a concern as LLMs might perpetuate or amplify biases present in training data. <strong>Privacy implications</strong> arise as more sophisticated search requires more understanding of user context and intent.</p>
+<p><strong>Digital literacy</strong> becomes more important as users need to understand how to effectively query LLM-powered systems and critically evaluate the results. The shift from keyword-based to conversational search requires new skills and mental models.</p>
+<p>The ultimate vision emerging from this transformation is search that understands not just what you&rsquo;re looking for, but why you&rsquo;re looking for it - and can proactively surface information you didn&rsquo;t even know you needed. LLMs are bringing us closer to that reality every day, creating search experiences that feel less like querying a database and more like having a conversation with a knowledgeable assistant who has read everything and can help you make sense of it all.</p>
+<p>Search relevance is no longer about matching words - it&rsquo;s about understanding meaning, context, and intent. This understanding is transforming how we discover, learn, and connect with information in ways that seemed like science fiction just a few years ago. The revolution is happening now, and it&rsquo;s reshaping not just how we search, but how we think about information itself.</p>
+<h2 class="heading" id="references-and-further-reading">
+  References and Further Reading
+  <a class="anchor" href="#references-and-further-reading">#</a>
+</h2>
+<ul>
+<li>Karpukhin, V., et al. &ldquo;Dense Passage Retrieval for Open-Domain Question Answering.&rdquo; EMNLP 2020.</li>
+<li>Khattab, O., &amp; Zaharia, M. &ldquo;ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT.&rdquo; SIGIR 2020.</li>
+<li>Radford, A., et al. &ldquo;Learning Transferable Visual Models From Natural Language Supervision.&rdquo; ICML 2021.</li>
+<li>Reimers, N., &amp; Gurevych, I. &ldquo;Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks.&rdquo; EMNLP 2019.</li>
+<li>Xiong, L., et al. &ldquo;Approximate Nearest Neighbor Negative Contrastive Learning for Dense Text Retrieval.&rdquo; ICLR 2021.</li>
+<li>Guo, J., et al. &ldquo;A Deep Look into Neural Ranking Models for Information Retrieval.&rdquo; Information Processing &amp; Management 2020.</li>
+<li>Lin, J., et al. &ldquo;Pretrained Transformers for Text Ranking: BERT and Beyond.&rdquo; Journal of the American Society for Information Science and Technology 2021.</li>
+<li>Thakur, N., et al. &ldquo;BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models.&rdquo; NeurIPS 2021.</li>
+<li>Zhan, J., et al. &ldquo;Optimizing Dense Retrieval Model Training with Hard Negatives.&rdquo; SIGIR 2021.</li>
+<li>Santhanam, K., et al. &ldquo;ColBERTv2: Effective and Efficient Retrieval via Lightweight Late Interaction.&rdquo; NAACL 2022.</li>
+<li>Lewis, P., et al. &ldquo;Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.&rdquo; NeurIPS 2020.</li>
+<li>Izacard, G., &amp; Grave, E. &ldquo;Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering.&rdquo; EACL 2021.</li>
+<li>Kenton, L., &amp; Toutanova, K. &ldquo;BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding.&rdquo; NAACL 2019.</li>
+<li>Johnson, J., et al. &ldquo;Billion-scale Similarity Search with GPUs.&rdquo; IEEE Transactions on Big Data 2019.</li>
+<li>Malkov, Y., &amp; Yashunin, D. &ldquo;Efficient and Robust Approximate Nearest Neighbor Search Using Hierarchical Navigable Small World Graphs.&rdquo; IEEE Transactions on Pattern Analysis and Machine Intelligence 2020.</li>
+<li>Hofstätter, S., et al. &ldquo;Efficiently Teaching an Effective Dense Retriever with Balanced Topic Aware Sampling.&rdquo; SIGIR 2021.</li>
+<li>Qu, Y., et al. &ldquo;RocketQA: An Optimized Training Approach to Dense Passage Retrieval for Open-Domain Question Answering.&rdquo; NAACL 2021.</li>
+<li>Xiong, L., et al. &ldquo;Towards Question-Answering as an Automatic Metric for Evaluating the Content Quality of a Summary.&rdquo; NAACL 2019.</li>
+<li>Nogueira, R., &amp; Cho, K. &ldquo;Passage Re-ranking with BERT.&rdquo; arXiv preprint arXiv:1901.04085 2019.</li>
+<li>Dai, Z., &amp; Callan, J. &ldquo;Context-Aware Sentence/Passage Term Importance Estimation For First Stage Retrieval.&rdquo; arXiv preprint arXiv:1910.10687 2019.</li>
+<li>Formal, T., et al. &ldquo;SPLADE: Sparse Lexical and Expansion Model for First Stage Ranking.&rdquo; SIGIR 2021.</li>
+<li>Lin, S., et al. &ldquo;Multi-Stage Conversational Passage Retrieval: An Approach to Fusing Term Importance Estimation and Neural Query Rewriting.&rdquo; SIGIR 2021.</li>
+</ul>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/bert4rec-sequential-recommendation/">
+                        BERT4Rec : Decoding Sequential Recommendations with the Power of Transformers
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/posts/multi-stage-recommender-systems/">
+                        Multi-Stage Approach to Building Recommender Systems
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
